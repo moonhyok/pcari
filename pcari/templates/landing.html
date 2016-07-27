@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <!-- Social media stuff -->
+  <meta property="og:title" content="California Report Card"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="{% static 'img/cafe/cafe6.png' %}" />
+  <meta property="og:url" content="{{ url_root }}/" />
+  <meta property="og:description" content="The California Report Card allows visitors to grade issues facing California and to suggest issues for future report cards." />
+  <!-- <link rel="stylesheet" type= "text/css" href="{% static 'pcari/pretest_style.css' %}"> -->
+  <link rel="stylesheet" type= "text/css" href="{% static 'opinionspace.css' %}">
+  <script type='text/javascript' src="{% static 'accounts.js' %}"></script>
+  <script type='text/javascript' src="{% static 'd3.v2.min.js' %}"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <title>PCARI</title>
+</head>
+<body>
+ <div class="full-page">
+
+  <div class='landing'>
+    <center>
+      <div class="home-btn-dialog-box landing-navigation">
+        <div class="home-btn-title responsive-header">
+          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+        </div>
+
+        <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
+          <a href="#" class="translate-btn">Tagalog</a><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}">
+        </div>
+
+      </div>
+      <img width="100%" src="{% static 'img/cafe/landing-phil2.jpg' %}" style="margin-top:3px;max-width: 620px;">
+      <div class="landing-img-title responsive-body" style="display:none;">
+        {{topic}}
+      </div> 
+          <!--<div class="landing-img-subtitle">
+          How can technology enhance learning at NYU?
+        </div> -->
+        <br/>
+
+        <div class="landing-img-txt responsive-body">  
+
+          <span class="english">Join <strong>{{num_users}}</strong> others to amplify Philippine's collective intelligence.</span>
+
+          <!-- <span class="spanish">Únete a los <strong>{{num_users}}</strong> otros para amplificar la inteligencia colectiva de California</span> -->
+        </div>
+
+
+        <div>
+          <form action="{% url 'pcari:create_user'%}" method="POST">
+              {% csrf_token %}
+              <input  class='button-div-red' style="margin-top: 10px;" type="submit" value="Begin" />
+            </form>
+        </div>
+
+        
+
+        <br/><br/><br/>
+
+        <span class="english">
+          <a href="http://en.wikipedia.org/wiki/California_Report_Card" target="_blank">More Information</a>
+        </span>
+        <!-- <span class="spanish">
+          <a href="http://en.wikipedia.org/wiki/California_Report_Card" target="_blank">karagdagang informasiyon</a>
+        </span> -->
+
+        <div class="landing-disclaimer">
+          A project by the CITRIS Data & Democracy Initiative at UC Berkeley
+        </div>
+
+      </center>
+
+
+
+    </div>
+
+
+  </body>
+  </html>

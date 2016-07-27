@@ -1,0 +1,326 @@
+{% load staticfiles %}
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <!-- Social media stuff -->
+  <meta property="og:title" content="California Report Card"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="{% static 'img/cafe/cafe6.png' %}" />
+  <meta property="og:url" content="{{ url_root }}/" />
+  <meta property="og:description" content="The California Report Card allows visitors to grade issues facing California and to suggest issues for future report cards." />
+  <!-- <link rel="stylesheet" type= "text/css" href="{% static 'pcari/pretest_style.css' %}"> -->
+  <link rel="stylesheet" type= "text/css" href="{% static 'opinionspace.css' %}">
+  <script type='text/javascript' src="{% static 'accounts.js' %}"></script>
+  <script type='text/javascript' src="{% static 'd3.v2.min.js' %}"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <title>PCARI</title>
+</head>
+<body>
+  <div class="full-page" id="moon">
+  <center>
+  <div class="home-btn-dialog-box landing-navigation">
+        <div class="home-btn-title responsive-header">
+          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+        </div>
+
+        <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
+          <a href="#" class="translate-btn">Tagalog</a><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}">
+        </div>
+
+      </div>
+
+<style>
+
+text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+
+</style>
+
+<script src="//d3js.org/d3.v4.0.0-alpha.28.min.js"></script>
+
+<script>
+
+var circleData = {{ comment_data|safe }};
+
+/* MOCK DATA */
+// var circleData = [
+//   { "cid":1, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":2, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":3, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":4, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":5, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":6, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":7, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":8, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":9, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":10, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":11, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":12, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 },
+//   { "cid":13, "x_seed":Math.random(), "y_seed":Math.random(), "shift":Math.random() * (1 + 1) - 1 }];
+
+var margin = {top: 60, right: 80, bottom: 100, left: 80},
+    width = $(window).width() - margin.right - margin.left,
+    height = $(window).height() - margin.top - margin.bottom;
+
+
+var y = d3.scalePoint()
+    .domain(d3.range(15))
+    .range([0, height]);
+
+var z = d3.scaleLinear()
+    .domain([10, 0])
+    .range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
+    .interpolate(d3.interpolateHcl);
+
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+  this.parentNode.appendChild(this);
+  });
+};
+
+var svg = d3.select("#moon").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+/* ALTERNATIVE SPHERE PRESENTATION */
+var circle = svg.selectAll("circle")
+    .data(circleData);
+
+/* TESTING TAG WITH CIRCLES */
+// circle.enter().append("circle")
+//     .attr("r", 48)
+//     .attr("cx", width/2)
+//     .attr("cy", height/2)
+//     .style("fill", function(d) { return z(Math.abs(d.cid % 14 - 10)); })
+//     .style("cursor","pointer")
+//     .style("cursor","hand")
+//     .on('mouseover', function(d) {
+//       d3.select(this)
+//       .moveToFront()
+//       .classed("active", true)
+//       .transition()
+//       .attr("r", 64)
+//       .style("stroke","#000")
+//       .style("stroke-width","2px");})
+//     .on('mouseout', function(d) {
+//       d3.select(this)
+//       .classed("active", false)
+//       .transition()
+//       .attr("r", 48)
+//       .style("stroke","none")
+//       .style("stroke-width","none"); })
+//     .on("click", post)
+//   .transition()
+//     .duration(800)
+//     .delay(function(d) { return d.cid * 40; })
+//     .on("start",slide)
+    // .on("start", function(d) { slide(d);} );
+
+/* TAGGING */
+// circle.enter().append("text")
+//     .attr("x", width/2)
+//     .attr("y", height/2)
+//   .text(function(d){return "moony"})
+//   .on("always", function(d) {moveToFront();})
+//   .transition()
+//     .duration(800)
+//     .delay(function(d) { return d.cid * 40; })
+//     .on("start", slide2);
+
+/* TESTING TAG WITH SPHERES */
+circle.enter().append("svg:image")
+    .attr("xlink:href", function(d) {
+      if (d.cid==0){
+        console.log("I am working");
+        return "{% static 'img/cafe/cafe_ball_you.png' %}"
+      } else {
+        return "{% static 'img/cafe/cafe6.png' %}"
+      };})
+    .attr("width", function(d) {
+      if (d.cid==0){
+        return 150
+      } else {
+        return 120
+      };})
+    .attr("height", function(d) {
+      if (d.cid==0){
+        return 150
+      } else {
+        return 120
+      };})
+    // .attr("width", function(d) {return(100*[0.6,0.8,1,1.2,1.4][Math.floor(Math.random() * 5)])+"";})
+    // .attr("height", function(d) {return(100*[0.6,0.8,1,1.2,1.4][Math.floor(Math.random() * 5)])+"";})
+    .attr("x",function(d) { return width/2.5;})
+    .attr("y",function(d) { return height/2.5;})
+    .style("cursor","pointer")
+    .style("cursor","hand")
+    .on("click", post)
+    .on('mouseover', function(d) {
+      d3.select(this)
+      .classed("active", true)
+      .moveToFront()
+      .transition()
+      .attr("width", 150)
+      .attr("height", 150);})
+    .on('mouseout', function(d) {
+      d3.select(this)
+      .classed("active", false)
+      .transition()
+      .attr("width", 120)
+      .attr("height", 120);})
+    .transition()
+      .duration(1000)
+      .delay(function(d) { return d.cid * 40; })
+      .on("start", slide2);
+
+/* NEW REPRESENTATION */
+// svg.selectAll("circle")
+//     .data(y.domain())
+//     // .data({{ data }})
+//     .enter().append("circle")
+//     .attr("r", 48)
+//     .attr("cx", width/2)
+//     .attr("cy", height/2)
+//     .style("fill", function(d) { return z(Math.abs(d % 20 - 10)); })
+//     .style("cursor","pointer")
+//     .style("cursor","hand")
+//     .on('mouseover', function(d) {
+//       d3.select(this)
+//       .moveToFront()
+//       .classed("active", true)
+//       .transition()
+//       .attr("r", 64)
+//       .style("stroke","#000")
+//       .style("stroke-width","2px");})
+//     .on('mouseout', function(d) {
+//       d3.select(this)
+//       .classed("active", false)
+//       .transition()
+//       .attr("r", 48)
+//       .style("stroke","none")
+//       .style("stroke-width","none"); })
+//     .on("click", post)
+//   .transition()
+//     .duration(800)
+//     .delay(function(d) { return d * 40; })
+//     .on("start", slide);
+
+
+function slide(d) {
+
+  var w = width*d.x_seed
+      h = height*d.y_seed
+      s = d.shift;
+
+  // var w = width*Math.random(),
+  //     h = height*Math.random(),
+  //     s = Math.random() * (1 + 1) - 1;
+ 
+  d3.active(this)
+      .attr("cx", w+2*10*s)
+      .attr("cy", h+2*10*s)
+    .transition()
+      .attr("cx", w-10*s)
+      .attr("cy", h-10*s)
+    .transition()
+      .attr("cx", w+10*s)
+      .attr("cy", h+10*s);
+  // console.log(d3.active(this).attr("cx"));
+  d3.select(this).classed("active", false);
+
+}
+
+function slide2(d) {
+  if (d.cid == 0 ){
+    return;
+  }
+
+  var w = width*d.x_seed-50
+      h = height*d.y_seed-50
+      s = d.shift;
+
+  // var w = width*Math.random(),
+  //     h = height*Math.random(),
+  //     s = Math.random() * (1 + 1) - 1;
+
+  d3.active(this)
+      .attr("x", w+2*10*s)
+      .attr("y", h+2*10*s)
+    .transition()
+      .attr("x", w-10*s)
+      .attr("y", h-10*s)
+    .transition()
+      .attr("x", w+10*s)
+      .attr("y", h+10*s);
+  d3.select(this).classed("active", false);
+}
+
+function post(d) {
+    method = "get"; // Set method to post by default if not specified.
+    var csrftoken = getCookie('csrftoken');
+
+    // console.log(d);
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    if (d.cid == 0){
+      form.setAttribute("action", "{% url 'pcari:comment' %}");  
+    } else {
+      form.setAttribute("action", "{% url 'pcari:get_comment' %}");  
+    }
+    
+
+    // for(var key in params) {
+    //     if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "TEXT");
+            hiddenField.setAttribute("name", "cid");
+            hiddenField.setAttribute("value", d.cid);
+
+            form.appendChild(hiddenField);
+    //      }
+    // }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+
+</script>
+</center>
+
+ </div>
+
+
+</body>
+</html>
