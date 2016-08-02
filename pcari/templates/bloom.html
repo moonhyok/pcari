@@ -163,18 +163,35 @@ circle.enter().append("svg:image")
     .style("cursor","hand")
     .on("click", post)
     .on('mouseover', function(d) {
-      d3.select(this)
-      .classed("active", true)
-      .moveToFront()
-      .transition()
-      .attr("width", 150)
-      .attr("height", 150);})
+      if (d.cid==0){
+        d3.select(this)
+          .classed("active", true)
+          .moveToFront()
+          .transition()
+          .attr("width", 200)
+          .attr("height", 200);
+      } else {
+        d3.select(this)
+          .classed("active", true)
+          .moveToFront()
+          .transition()
+          .attr("width", 150)
+          .attr("height", 150);
+      };})
     .on('mouseout', function(d) {
-      d3.select(this)
-      .classed("active", false)
-      .transition()
-      .attr("width", 120)
-      .attr("height", 120);})
+      if (d.cid==0){
+        d3.select(this)
+          .classed("active", false)
+          .transition()
+          .attr("width", 150)
+          .attr("height", 150);
+      } else {
+        d3.select(this)
+          .classed("active", false)
+          .transition()
+          .attr("width", 120)
+          .attr("height", 120);
+      };})
     .transition()
       .duration(1000)
       .delay(function(d) { return d.cid * 40; })
@@ -239,6 +256,8 @@ function slide(d) {
 
 function slide2(d) {
   if (d.cid == 0 ){
+    d3.select(this)
+      .moveToFront();
     return;
   }
 
