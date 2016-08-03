@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^peerevaluation/rate/$', views.get_comment, name='get_comment'),
     url(r'^bloom/(?P<cid>[0-9]+)/$', views.rate_comment, name='rate_comment'),
     url(r'^comment/$', views.comment, name='comment'),
+    url(r'^help/$', views.help, name='help'),
     # url(r'^retrieving/$', views.get_comments, name='get_comments'),
     url(r'^logout/$', views.logout, name='logout')
     # url(r'^pretest/(?P<pretest_id>[0-9]+)/$', views.pretest, name='pretest'),

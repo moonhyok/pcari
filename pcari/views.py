@@ -96,6 +96,10 @@ def review(request):
     context = {'comments':comments}
     return render(request, 'review.html', context)
 
+def help(request):
+    context = {}
+    return render(request, 'help.html', context)
+
 def bloom(request, done = False):
     user = request.user
     progression = Progression.objects.all().filter(user=user)[0]

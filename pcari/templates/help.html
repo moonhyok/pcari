@@ -1,0 +1,69 @@
+{% load staticfiles %}
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <!-- Social media stuff -->
+  <meta property="og:title" content="California Report Card"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="{% static 'img/cafe/cafe6.png' %}" />
+  <meta property="og:url" content="{{ url_root }}/" />
+  <meta property="og:description" content="The California Report Card allows visitors to grade issues facing California and to suggest issues for future report cards." />
+  <!-- <link rel="stylesheet" type= "text/css" href="{% static 'pcari/pretest_style.css' %}"> -->
+  <link rel="stylesheet" type= "text/css" href="{% static 'opinionspace.css' %}">
+  <script type='text/javascript' src="{% static 'accounts.js' %}"></script>
+  <script type='text/javascript' src="{% static 'd3.v2.min.js' %}"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <title>PCARI</title>
+</head>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+<body>
+ <div class="full-page">
+  <center>
+    <div class="home-btn-dialog-box landing-navigation">
+        <div class="home-btn-title responsive-header">
+          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+        </div>
+
+        <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
+          <a href="#" class="translate-btn">Tagalog</a>
+          <img onclick="goBack()" width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_back_bttn.png' %}">
+        </div>
+      </div>
+
+      <div style="max-width: 620px; width: 100%; border: 2px solid white;margin-top: 10px;">
+
+      <div class="burger-div burger-div-about">
+        About the QuakeCAFE
+      </div>
+
+      <div class="burger-div burger-div-compare">
+      <!-- <div class="burger-div burger-div-compare" style="display: none;"> -->
+        Learn More About Your Preparedness
+      </div>
+
+      <div class="burger-div burger-div-others">
+      <!-- <div class="burger-div burger-div-others" style="display: none;"> -->
+        Rate More Ideas
+      </div>
+
+      <div class="burger-div burger-div-yours">
+      <!-- <div class="burger-div burger-div-yours" style="display: none;"> -->
+        Suggest Your Own Idea
+      </div>
+
+      <div class="burger-div burger-div-logout">
+        Exit
+      </div>
+    </div>
+  </div>
+</center>
+</div>
+</body>
+</html>
