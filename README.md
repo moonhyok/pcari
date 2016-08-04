@@ -7,13 +7,13 @@ This is still in its development stage. The code is not be perfect and there *wi
 
 - python 2.7
   - comes by default on most systems
-  - check installed version with python -V
+  - check installed version with `python -V` on terminal
 - pip: package manager for python
-  -install with sudo easy_install pip
+  -install with `sudo easy_install pip`
 - django 1.9 or higher
-  - install with sudo pip install django
+  - install with `sudo pip install django`
 - numpy
-  -install with sudo pip install numpy
+  -install with `sudo pip install numpy`
 
 ## To run the system:
 - clone the repo
