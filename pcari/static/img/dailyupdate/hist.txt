@@ -1,1 +1,0 @@
-store histograms in the dailyupdate folder
