@@ -22,14 +22,18 @@
   <center>
   <div class="home-btn-dialog-box landing-navigation">
         <div class="home-btn-title responsive-header">
-          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+          <span class="landing-page-banner">PCARI</span> 
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
-          <a href="#" class="translate-btn">Tagalog</a><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}">
+          <a href="{% url 'pcari:switch_language' %}" class="translate-btn">{{translate}}</a>
+          <a href="{% url 'pcari:help' %}"><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}"></a>
         </div>
 
       </div>
+
+      </br>
+      <span> {{bloom_description}}</span>
 
 <style>
 
@@ -138,20 +142,19 @@ var circle = svg.selectAll("circle")
 circle.enter().append("svg:image")
     .attr("xlink:href", function(d) {
       if (d.cid==0){
-        console.log("I am working");
         return "{% static 'img/cafe/cafe_ball_you.png' %}"
       } else {
         return "{% static 'img/cafe/cafe6.png' %}"
       };})
     .attr("width", function(d) {
       if (d.cid==0){
-        return 150
+        return 180
       } else {
         return 120
       };})
     .attr("height", function(d) {
       if (d.cid==0){
-        return 150
+        return 180
       } else {
         return 120
       };})
@@ -168,8 +171,8 @@ circle.enter().append("svg:image")
           .classed("active", true)
           .moveToFront()
           .transition()
-          .attr("width", 200)
-          .attr("height", 200);
+          .attr("width", 230)
+          .attr("height", 230);
       } else {
         d3.select(this)
           .classed("active", true)
@@ -183,8 +186,8 @@ circle.enter().append("svg:image")
         d3.select(this)
           .classed("active", false)
           .transition()
-          .attr("width", 150)
-          .attr("height", 150);
+          .attr("width", 180)
+          .attr("height", 180);
       } else {
         d3.select(this)
           .classed("active", false)
@@ -197,48 +200,11 @@ circle.enter().append("svg:image")
       .delay(function(d) { return d.cid * 40; })
       .on("start", slide2);
 
-/* NEW REPRESENTATION */
-// svg.selectAll("circle")
-//     .data(y.domain())
-//     // .data({{ data }})
-//     .enter().append("circle")
-//     .attr("r", 48)
-//     .attr("cx", width/2)
-//     .attr("cy", height/2)
-//     .style("fill", function(d) { return z(Math.abs(d % 20 - 10)); })
-//     .style("cursor","pointer")
-//     .style("cursor","hand")
-//     .on('mouseover', function(d) {
-//       d3.select(this)
-//       .moveToFront()
-//       .classed("active", true)
-//       .transition()
-//       .attr("r", 64)
-//       .style("stroke","#000")
-//       .style("stroke-width","2px");})
-//     .on('mouseout', function(d) {
-//       d3.select(this)
-//       .classed("active", false)
-//       .transition()
-//       .attr("r", 48)
-//       .style("stroke","none")
-//       .style("stroke-width","none"); })
-//     .on("click", post)
-//   .transition()
-//     .duration(800)
-//     .delay(function(d) { return d * 40; })
-//     .on("start", slide);
-
-
 function slide(d) {
 
   var w = width*d.x_seed
       h = height*d.y_seed
       s = d.shift;
-
-  // var w = width*Math.random(),
-  //     h = height*Math.random(),
-  //     s = Math.random() * (1 + 1) - 1;
  
   d3.active(this)
       .attr("cx", w+2*10*s)

@@ -21,11 +21,12 @@
   <center>
     <div class="home-btn-dialog-box landing-navigation">
         <div class="home-btn-title responsive-header">
-          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+          <span class="landing-page-banner">PCARI</span> 
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
-          <a href="#" class="translate-btn">Tagalog</a><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}">
+          <a href="{% url 'pcari:switch_language' %}" class="translate-btn">{{translate}}</a>
+          <a href="{% url 'pcari:help' %}"><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}"></a>
         </div>
       </div>
 
@@ -33,7 +34,7 @@
     <div class="responsive-body landing-img-txt" style="text-align:left;padding-top: 15px; margin: 10px 10px;">
       <span>{{client_settings.LOGOUT_DIALOG_TEXT}}</span><br/><br/>
       
-      Please share QuakeCAFE with your friends and family.
+      Please share the PCARI system with your friends and family.
 
       <br></br>
       <span class="english"><a href="http://twitter.com/intent/tweet?text=How+prepared+are+you+for+a+major+%23quake%3F+Try+QuakeCAFE+developed+by+%40GavinNewsom+%26+%40ken_goldberg+http%3A%2F%2Fquakecafe.org+%40citrisnews" target="_blank" style="color: #555555;"><img src="{% static 'img/cafe/twitter-button.png' %}" width="102px"></a>
@@ -59,7 +60,7 @@
               <form action="{% url 'pcari:landing'%}" method="POST">
                 {% csrf_token %}
                 <textarea name='email' id='email' maxlength="500" style="width:500px"></textarea>
-                <input  class='button-div-wide' style="margin-top: 10px;" type="submit" value="Submit" />
+                <input  class='button-div-wide' style="margin-top: 10px;" type="submit" value="{{submit}}" />
               </form>
             </div>
           </center>

@@ -28,11 +28,11 @@ function goBack() {
   <center>
     <div class="home-btn-dialog-box landing-navigation">
         <div class="home-btn-title responsive-header">
-          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+          <span class="landing-page-banner">PCARI</span> 
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
-          <a href="#" class="translate-btn">Tagalog</a>
+          <a href="{% url 'pcari:switch_language' %}" class="translate-btn">{{translate}}</a>
           <img onclick="goBack()" width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_back_bttn.png' %}">
         </div>
       </div>

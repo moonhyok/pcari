@@ -789,40 +789,6 @@ table.pretty caption {
 		bottom: 20px;*/
 	}
 
-	.button-div-wide {
-		background-image:url('img/cafe/button-wide.png');
-		background-size: cover;
-		border-radius: 2px;
-		width: 280px;
-		font-size: 18px;
-		background-color: #eae6d8;
-		
-		font-weight: bolder;
-		
-		line-height: 50px;
-		text-align: center;
-		color: #442b10;
-		margin-bottom: 5px;
-		font-family: DroidSans-Bold, sans-serif;
-		padding:0;
-
-	    
-	    border: none;
-	    outline: none;
-
-		display:block;
-		
-		cursor: pointer;
-		cursor: hand;
-		/*position: absolute;
-		bottom: 20px;*/
-	}
-
-	.button-div-wide:hover {
-
-		background-image:url('img/cafe/button-wide-down.png');
-	}
-
 	.burger-div{
 		box-shadow: 0px 1px 1px #FCFCFC;
 		vertical-align: middle;
@@ -837,43 +803,18 @@ table.pretty caption {
 		cursor: hand;
 	}
 
-		/*.skip-btn {
-		background-color: #57cccc;
-		border: 0px solid #555555;
-		font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
-		width: 90px;
-		border-radius:7px;
+	.button-div-small {
+		background: #57cccc;
+		border:0px solid #555555;
+		border-radius:10px;
+		width: 80px;
 		font-weight: normal;
-		font-size: 18px;
-		line-height: 32px;
+		font-size: 14px;
+		line-height: 20px;
 		text-align: center;
-		color: #FCFCFC;
+		color: #000000;
 		margin-bottom: 5px;
 		text-shadow: none;
-		z-index: 999;
-		position: absolute;
-		
-		text-transform: uppercase;
-		bottom: 60px;
-		right: 15px;
-		position: absolute;
-		bottom: 20px;
-		}*/
-
-		.button-div-small {
-			background: #57cccc;
-			border:0px solid #555555;
-			border-radius:10px;
-			width: 80px;
-			font-weight: normal;
-			font-size: 14px;
-			line-height: 20px;
-			text-align: center;
-			color: #000000;
-			margin-bottom: 5px;
-			text-shadow: none;
-		/*position: absolute;
-		bottom: 20px;*/
 	}
 
 	.capitol-bg{
@@ -904,8 +845,6 @@ table.pretty caption {
 		
 		cursor: pointer;
 		cursor: hand;
-		/*position: absolute;
-		bottom: 20px;*/
 	}
 
 	.button-div-red:hover {
@@ -913,6 +852,38 @@ table.pretty caption {
 		background-image:url('img/cafe/button-default-down.png');
 	}
 
+	.button-div-wide {
+		max-width: 280px;
+		background-image:url('img/cafe/button-wide.png');
+		background-size: cover;
+		border-radius: 2px;
+		width: 100%;
+		font-size: 18px;
+		background-color: #eae6d8;
+		
+		font-weight: bolder;
+		
+		line-height: 50px;
+		text-align: center;
+		color: #442b10;
+		margin-bottom: 5px;
+		font-family: DroidSans-Bold, sans-serif;
+		padding:0;
+
+	    
+	    border: none;
+	    outline: none;
+
+		display:block;
+		
+		cursor: pointer;
+		cursor: hand;
+	}
+
+	.button-div-wide:hover {
+
+		background-image:url('img/cafe/button-wide-down.png');
+	}
 	.button-skip {
 		border:1px solid #FFFFFF;
 		background-color: rgba(100, 100, 100,0.25);

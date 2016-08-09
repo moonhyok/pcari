@@ -25,21 +25,22 @@
     <center>
       <div class="home-btn-dialog-box">
         <div class="home-btn-title responsive-header">
-          <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+          <span class="landing-page-banner">PCARI</span> 
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block; text-align: right;">
-          <a href="#" class="translate-btn">Tagalog</a><img width="30px" class='help-btn-dialog' id="help-dialog" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}"> 
+          <a href="{% url 'pcari:switch_language' %}" class="translate-btn">{{translate}}</a>
+          <a href="{% url 'pcari:help' %}"><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}"></a>
         </div>
 
       </div> 
       <!--<img class="header-img-topic center" src="{{ url_root }}/media/mobile/img/cafe/CRC_join.png"/>-->
       <br/>
-        <span>The plots below show the average trend of the ratings.</span>
+        <span>{{graph_description}}</span>
 
 
       <br/>
-      <div id="moon"></div>
+      <div style="width:100%; display: inline-block; position:relative;" id="moon"></div>
 
 
       <style>
@@ -162,7 +163,7 @@
       </script>
 
       <div class="discuss-btn-div">
-        <a href="{% url 'pcari:bloom'%}"><div class='dialog-ready button-div-red responsive-btn' style="display: inline-block;">Next</div></a><br/><br/>
+        <a href="{% url 'pcari:bloom'%}"><div class='dialog-ready button-div-red responsive-btn' style="display: inline-block;">{{next}}</div></a><br/><br/>
         <!--<div class='dialog-ready2 button-div responsive-btn' style="display: inline-block;">Tell Us Your Idea</div>-->
         <!--<button type='submit' data-theme='b' class='dialog-next'  onclick="$('.dialog-text1').hide();$('.dialog-text2').show();"><font style="font-size: 16px;">Next</font></button>-->
       </div>

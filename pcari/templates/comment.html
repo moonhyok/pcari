@@ -27,10 +27,11 @@
         <center>
           <div class="home-btn-dialog-box">
             <div class="home-btn-title responsive-header">
-              <span class="landing-page-banner">{{client_settings.WELCOME_PAGE_TITLE}}</span> 
+              <span class="landing-page-banner">PCARI</span> 
             </div>
             <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
-              <a href="#" class="translate-btn">Tagalog</a><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}">
+              <a href="{% url 'pcari:switch_language' %}" class="translate-btn">{{translate}}</a>
+              <a href="{% url 'pcari:help' %}"><img width="30px" class='help-btn-dialog' id="help-landing" src="{% static 'img/cafe/CRC_help_bttn_compress.png' %}"></a>
             </div>
 
           </div> 
@@ -39,7 +40,7 @@
             <div class='new-panel'>
              <div class="landing-img-txt responsive-body">  
 
-              <span class="english"> Please write your comment below </span>
+              <span class="english">{{comment_description}}</span>
 
             </div>
             <br><br>
@@ -50,7 +51,7 @@
 
                 <textarea name='comment' id='entered-comment' maxlength="500"></textarea>
                 <br><br><br>
-                <input  class='button-div-wide' style="margin-top: 10px;" type="submit" value="Post" />
+                <input  class='button-div-wide' style="margin-top: 10px;" type="submit" value="{{post}}" />
               </form>
             </div>
 
