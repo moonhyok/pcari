@@ -93,6 +93,7 @@ class GeneralSetting(models.Model):
 class QuantitativeQuestion(models.Model):
     qid = models.AutoField(primary_key=True)
     question = models.CharField(max_length=500, default="")
+    average_score = models.IntegerField(default = 0)
     tagalog_question = models.CharField(max_length=500, default="walang tagalog pagsasalin")
 
 class QualitativeQuestion(models.Model):
@@ -113,9 +114,11 @@ class Rating(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
-    comment = models.CharField(max_length = 1000, default = "")
+    comment = models.CharField(max_length = 1000, default = "", null = True)
+    tagalog_comment = models.CharField(max_length = 1000, default = "", null = True)
     date = models.DateTimeField(auto_now_add = True)
-    num_rated = models.IntegerField(default = 0)
+    average_score = models.IntegerField(default = 0)
+    number_rated = models.IntegerField(default = 0)
     tag = models.CharField(max_length=200, default = "", null=True)
 
 class CommentRating(models.Model):
@@ -124,7 +127,7 @@ class CommentRating(models.Model):
     score = models.IntegerField(default = 0)
     date = models.DateTimeField(auto_now_add = True)
 
-class Progression(models.Model):
+class UserProgression(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
     date = models.DateTimeField(auto_now_add = True)
     landing = models.BooleanField(default=False)
@@ -136,3 +139,13 @@ class Progression(models.Model):
     num_peer_rated = models.IntegerField(default=0)
     comment = models.BooleanField(default=False)
     logout = models.BooleanField(default=False)
+    completion_rate = models.IntegerField(default = 0)
+
+class Progression(models.Model):
+    landing = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
+    review = models.IntegerField(default=0)
+    bloom = models.IntegerField(default=0)
+    peer_rating = models.IntegerField(default=0)
+    comment = models.IntegerField(default=0)
+    logout = models.IntegerField(default=0)

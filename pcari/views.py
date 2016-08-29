@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import loader
-from pcari.models import  QuantitativeQuestion, QualitativeQuestion, Rating, Progression, Comment, CommentRating, GeneralSetting
+from pcari.models import  QuantitativeQuestion, QualitativeQuestion, Rating, UserProgression, Comment, CommentRating, GeneralSetting
 from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -33,7 +33,7 @@ def switch_language(request):
     global TEXT 
     TEXT= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
     try:
-        progression = Progression.objects.all().filter(user=request.user)[0]
+        progression = UserProgression.objects.all().filter(user=request.user)[0]
         if progression.num_rated <= Q_COUNT:
             progression.num_rated -= 1
             progression.save()
@@ -54,7 +54,7 @@ def landing(request):
 def create_user(request):
 
     #User Authentication
-    uid = Progression.objects.all().count()
+    uid = UserProgression.objects.all().count()
     new_user = User.objects.create_user('%d' % uid,'%d@example.com' % uid,'%d' % uid)
     new_user.save()
     
@@ -63,7 +63,7 @@ def create_user(request):
     login(request,user)
 
     #Data Initialization
-    progression = Progression(user = user)
+    progression = UserProgression(user = user)
     progression.landing = True
     
     q = QUAN_QUESTIONS[progression.num_rated]
@@ -92,20 +92,19 @@ def rate(request, qid):
 
 
     try:
-        score = request.POST['choice']
-        
+        rating.score = request.POST['choice']
+        rating.save()
     except:
-        score = -2
+        rating.score = -2
 
-    if score == "Skip" or score == "Laktawan":
+    if rating.score == "Skip" or rating.score == "Laktawan":
         rating.score = -1
+        rating.save()
 
-    if score == "Submit" or score == "Ipasa":
+    if rating.score == "Submit" or rating.score == "Ipasa":
         rating.response = request.POST['comment']
 
-    rating.save()
-
-    progression = Progression.objects.all().filter(user=user)[0]
+    progression = UserProgression.objects.all().filter(user=user)[0]
     progression.rating = True
     progression.num_rated += 1
     progression.save()
@@ -144,7 +143,7 @@ def rate(request, qid):
 
 def review(request):
     user = request.user
-    progression = Progression.objects.all().filter(user=user)[0]
+    progression = UserProgression.objects.all().filter(user=user)[0]
     progression.review = True
     progression.save()
 
@@ -164,7 +163,7 @@ def help(request):
 
 def bloom(request, done = False):
     user = request.user
-    progression = Progression.objects.all().filter(user=user)[0]
+    progression = UserProgression.objects.all().filter(user=user)[0]
     progression.bloom = True
     progression.save()
 
@@ -192,7 +191,7 @@ def bloom(request, done = False):
 
 def comment(request):
     user = request.user
-    progression = Progression.objects.all().filter(user=user)[0]
+    progression = UserProgression.objects.all().filter(user=user)[0]
     progression.comment = True
     progression.save()
 
@@ -205,7 +204,7 @@ def comment(request):
 
 def logout(request):
     user = request.user
-    progression = Progression.objects.all().filter(user=user)[0]
+    progression = UserProgression.objects.all().filter(user=user)[0]
     progression.logout = True
     progression.save()
 
@@ -237,7 +236,7 @@ def get_comment(request):
 
 def rate_comment(request, cid):
     user = request.user
-    progression = Progression.objects.all().filter(user=user)[0]
+    progression = UserProgression.objects.all().filter(user=user)[0]
     progression.peer_rating = True
     progression.num_peer_rated += 1
     progression.save()
@@ -262,3 +261,10 @@ def rate_comment(request, cid):
         return bloom(request,done=True)
 
     return bloom(request)
+
+def update_ratings(user):
+
+    questions = QuantitativeQuestion.objects.all()
+    ratings = Rating.objects.all().filter(user=user)
+    # for q in questions:
+
