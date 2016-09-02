@@ -44,9 +44,12 @@ def switch_language(request):
 
 def landing(request):
     # logout(request)
+    description = TEXT['landing_description'] % len(User.objects.all())
     context = {
     'translate':TEXT['translate'], 
-    'landing_description':TEXT['landing_description'], 
+    'landing_description':description, 
+    'more_info':TEXT['more_info'],
+    'short_description':TEXT['short_description'],
     'begin':TEXT['begin_button']
     }
     return render(request, 'landing.html', context)
@@ -69,19 +72,19 @@ def create_user(request):
     q = QUAN_QUESTIONS[progression.num_rated]
 
     progression.save()
-    
+
+    question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
+
     context = {
     'translate':TEXT['translate'], 
     'question_description':TEXT['question_description'], 
     'feedback_description':TEXT['feedback_description'], 
     'skip':TEXT['skip_button'],
-    'question_word':TEXT['question_word'],
-    'of_word':TEXT['of_word'],
+    'question_of':question_of,
     'question': q.question if TEXT['translate'] == "Tagalog" else q.tagalog_question,
+    'scale_description':TEXT['scale_description'],
     'qid': q.qid, 
-    'rating':True, 
-    'total':Q_COUNT, 
-    'index':progression.num_rated+1
+    'rating':True
     }
     return render(request, 'rating.html', context)
 
@@ -95,14 +98,14 @@ def rate(request, qid):
         rating.score = request.POST['choice']
         rating.save()
     except:
-        rating.score = -2
+        pass
 
     if rating.score == "Skip" or rating.score == "Laktawan":
         rating.score = -1
         rating.save()
 
-    if rating.score == "Submit" or rating.score == "Ipasa":
-        rating.response = request.POST['comment']
+    # if rating.score == "Submit" or rating.score == "Ipasa":
+    #     rating.response = request.POST['comment']
 
     progression = UserProgression.objects.all().filter(user=user)[0]
     progression.rating = True
@@ -120,24 +123,20 @@ def rate(request, qid):
             q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
             qualitative = True
 
+        question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
+
         context = {
-        'translate':TEXT['translate'],
-        'peer_evaluation_description':TEXT['peer_evaluation_description'], 
+        'translate':TEXT['translate'], 
         'question_description':TEXT['question_description'], 
-        'feedback_description':TEXT['feedback_description'],
+        'feedback_description':TEXT['feedback_description'], 
         'skip':TEXT['skip_button'],
-        'submit':TEXT['submit_button'],
-        'question_word':TEXT['question_word'],
-        'of_word':TEXT['of_word'],
-        'question': q.question if TEXT['translate'] == "Tagalog" else q.tagalog_question, 
-        'qualitative':qualitative,
+        'question_of':question_of,
+        'question': q.question if TEXT['translate'] == "Tagalog" else q.tagalog_question,
+        'scale_description':TEXT['scale_description'],
         'qid': q.qid, 
-        'rating':True, 
-        'total':Q_COUNT, 
-        'index':progression.num_rated+1
+        'rating':True
         }
         return render(request, 'rating.html', context)
-
 
     return review(request)
 
@@ -146,19 +145,34 @@ def review(request):
     progression = UserProgression.objects.all().filter(user=user)[0]
     progression.review = True
     progression.save()
+    q = QuantitativeQuestion.objects.all()
+    r = Rating.objects.all().filter(user=user)
+    user_ratings = map(lambda x: (x.qid,x.score), r)
+    user_ratings.sort(key=lambda x: x[0])
 
+    if TEXT['translate'] == "Tagalog":
+        tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]), q)
+    else:
+        tag = map(lambda x: (x.tagalog_tag,x.qid,user_ratings[x.qid-1][1]), q)
 
-    comments = map(lambda x: x.id, Comment.objects.all())
     context = {
     'translate':TEXT['translate'],
     'graph_description':TEXT['graph_description'],
     'next':TEXT['next_button'],
-    'comments':comments
+    'tags':tag,
+    'heigh':60,
+    'n':q.count()
     }
     return render(request, 'review.html', context)
 
 def help(request):
-    context = {'translate':TEXT['translate']}
+    context = {
+    'about':TEXT['about'],
+    'rate_more':TEXT['rate_more'],
+    'suggest_own':TEXT['suggest_own'],
+    'exit':TEXT['exit'],
+    'translate':TEXT['translate']
+    }
     return render(request, 'help.html', context)
 
 def bloom(request, done = False):
@@ -263,8 +277,14 @@ def rate_comment(request, cid):
     return bloom(request)
 
 def update_ratings(user):
-
     questions = QuantitativeQuestion.objects.all()
     ratings = Rating.objects.all().filter(user=user)
+    for r in ratings:
+        q = questions[r.qid-1]
+        ave = (q.average_score * q.number_rated + r.score) / (q.number_rated + 1)
+        q.average_score = ave
+        q.number_rated += 1
+        q.save()
+
     # for q in questions:
 

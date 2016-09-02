@@ -1,4 +1,5 @@
-{% load staticfiles %}
+{% load static %}
+{% static "" as baseUrl %}
 <html>
 <head>
   <meta charset="UTF-8" />
@@ -15,6 +16,65 @@
   <script type='text/javascript' src="{% static 'accounts.js' %}"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+  <style>
+
+  /*.bar {
+    fill: steelblue;
+    #442b10 - original color (brownish)
+  }*/
+
+  .bar:hover {
+    fill: #76b9b6;
+  }
+
+  .axis {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+  .d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  }
+
+  /* Creates a small triangle extender for the tooltip */
+  .d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+  }
+
+  /* Style northward tooltips differently */
+  .d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+  </style>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <title>PCARI</title>
 </head>
 <body>
@@ -36,131 +96,104 @@
       </div> 
       <!--<img class="header-img-topic center" src="{{ url_root }}/media/mobile/img/cafe/CRC_join.png"/>-->
       <br/>
+
         <span>{{graph_description}}</span>
 
 
       <br/>
-      <div style="width:100%; display: inline-block; position:relative;" id="moon"></div>
+
+    {% for tag,qid,score in tags %}
+
+    <div class="compare-box-{{qid}}" style="padding-bottom: 15px;max-width:620px; max-height: 70px;display: inline-block;">
+            <div class="compare-tag" style="float:left;">
+              <!--<div style="font-size: 12px; font-style: italic;font-weight: bolder;" onclick="accounts.hideAll();$('.detail-box-{{k.id}}').show();">{{k.id}}. </div>-->
+              <div style="font-size: 18px; font-weight: bolder; padding-top: 15% " class="english">{{tag}}</div>
+              <div style="font-size: 14px; font-weight: bolder;cursor: pointer;cursor: hand;"><span>more info</span></div>
+            </div>
+
+            <div style="cursor: pointer;cursor: hand; float:right; max-height: 55px;" id="sparkLineCanvas{{qid}}" width="320"></div>
+    </div>
+
+    <br>
 
 
-      <style>
+    <script>
 
-        text {
-          font: 10px sans-serif;
-        }
+    var margin = {top: 20, right: 20, bottom: 20, left: 40},
+        width = 320 - margin.left - margin.right,
+        height = 50-margin.bottom;
 
-        .axis path,
-        .axis line {
-          fill: none;
-          stroke: #000;
-          shape-rendering: crispEdges;
-        }
+    if ({{qid}} % 2 == 1)
+            $('.compare-box-{{qid}}').css("background-color","rgba(0,0,0,0.05)")
 
-        .line {
-          fill: none;
-          stroke-width: 1.5px;
-        }
+    var x{{qid}} = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1);
 
-        .label {
-          text-anchor: middle;
-        }
+    var y{{qid}} = d3.scale.linear()
+        .range([height, 0]);
 
-        .label rect {
-          fill: white;
-        }
+    var xAxis{{qid}} = d3.svg.axis()
+        .scale(x{{qid}})
+        .orient("bottom");
 
-        .label-key {
-          font-weight: bold;
-        }
+    var yAxis{{qid}} = d3.svg.axis()
+        .scale(y{{qid}})
+        .orient("left");
 
-      </style>
-
-      <script src="//d3js.org/d3.v4.0.0-alpha.9.min.js"></script>
-      <script>
-
-        var parseTime = d3.timeParse("%Y");
-
-        var margin = {top: 60, right: 80, bottom: 100, left: 80},
-            width = $(window).width() - margin.right - margin.left,
-            height = $(window).height()/2 - margin.top - margin.bottom,
-            labelPadding = 3;
-
-        var svg = d3.select("#moon").append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom);
-
-        
-
-        var g = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        d3.requestTsv("{% static 'data.tsv' %}", function(d) {
-          d.date = parseTime(d.date);
-          for (var k in d) if (k !== "date") d[k] = +d[k];
-            return d;
-        }, function(error, data) {
-          if (error) throw error;
-
-          var series = data.columns.slice(1).map(function(key) {
-            return data.map(function(d) {
-              return {
-                key: key,
-                date: d.date,
-                value: d[key]
-              };
-            });
-          });
-
-          var x = d3.scaleTime()
-          .domain([data[0].date, data[data.length - 1].date])
-          .range([0, width]);
-
-          var y = d3.scaleLinear()
-          .domain([0, d3.max(series, function(s) { return d3.max(s, function(d) { return d.value; }); })])
-          .range([height, 0]);
-
-          var z = d3.scaleCategory10();
-
-          g.append("g")
-          .attr("class", "axis axis--x")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x));
-
-          var serie = g.selectAll(".serie")
-          .data(series)
-          .enter().append("g")
-          .attr("class", "serie");
-
-          serie.append("path")
-          .attr("class", "line")
-          .style("stroke", function(d) { return z(d[0].key); })
-          .attr("d", d3.line()
-            .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.value); }));
-
-          var label = serie.selectAll(".label")
-          .data(function(d) { return d; })
-          .enter().append("g")
-          .attr("class", "label")
-          .attr("transform", function(d, i) { return "translate(" + x(d.date) + "," + y(d.value) + ")"; });
-
-          label.append("text")
-          .attr("dy", ".35em")
-          .text(function(d) { return d.value; })
-          .filter(function(d, i) { return i === data.length - 1; })
-          .append("tspan")
-          .attr("class", "label-key")
-          .text(function(d) { return " " + d.key; });
-
-          label.append("rect", "text")
-          .datum(function() { return this.nextSibling.getBBox(); })
-          .attr("x", function(d) { return d.x - labelPadding; })
-          .attr("y", function(d) { return d.y - labelPadding; })
-          .attr("width", function(d) { return d.width + 2 * labelPadding; })
-          .attr("height", function(d) { return d.height + 2 * labelPadding; });
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+          return "<span style='color:white'>" + d.count + "</span>";
         });
 
-      </script>
+    var svg{{qid}} = d3.select("#sparkLineCanvas{{qid}}").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg{{qid}}.call(tip);    
+
+    d3.tsv("{{baseUrl}}/data/q{{qid}}.tsv", type, function(error, data) {
+      if (error) throw error;
+
+      x{{qid}}.domain(data.map(function(d) { return d.score; }));
+      y{{qid}}.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+      svg{{qid}}.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis{{qid}});
+
+      svg{{qid}}.selectAll(".bar")
+          .data(data)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .attr("fill",function(d){
+            if (d.score == {{score}}){
+              return "coral";
+            } else{
+              return "steelblue";
+            }
+          })
+          .attr("x", function(d) { return x{{qid}}(d.score); })
+          .attr("width", x{{qid}}.rangeBand())
+          .attr("y", function(d) { return y{{qid}}(d.count); })
+          .attr("height", function(d) { return height - y{{qid}}(d.count); })
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+    });
+
+    function type(d) {
+      d.count = +d.count;
+      return d;
+    };
+
+    </script>
+
+    {% endfor %}
+     
 
       <div class="discuss-btn-div">
         <a href="{% url 'pcari:bloom'%}"><div class='dialog-ready button-div-red responsive-btn' style="display: inline-block;">{{next}}</div></a><br/><br/>

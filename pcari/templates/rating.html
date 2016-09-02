@@ -39,7 +39,7 @@
 
   {% if rating %}
 
-  <div class="question-number responsive-body"><span>{{question_word}}</span> {{ index }} <span>{{of_word}}</span> {{ total }}.</div>
+  <div class="question-number responsive-body"><span>{{question_of}}</span></div>
   <div class="question-number responsive-body">{{question_description}}</div>
   <div class="statement-style responsive-body english">{{ question }}</div>
   <!-- <div class="statement-style responsive-body spanish" style="display:none;">spanish</div> -->
@@ -54,13 +54,13 @@
       {% csrf_token %}
 
       <textarea style="margin-top: 10px;" name='comment' id='entered-comment' maxlength="1000"></textarea>
-      <br><br><br>
+      </br>
       <input  class='button-div-wide' style="margin-top: 5px;" name="choice" type="submit" value="{{submit}}" />
     </form>
   </div>
 
   {% else %}
-  <div class="question-number responsive-body"><center>0 (strongly disagree) to 9 (strongly agree)</center></div>
+  <div class="question-number responsive-body"><center>{{scale_description}}</center></div>
   
   <div class="crc-div-wrapper">
     <div class="grade-container">
