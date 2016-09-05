@@ -128,4 +128,6 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT='/home/dorislee0309/citizen_sci_edu/pcari/pcari/static/pcari' 
+
+URL_ROOT = 'http://opinion.berkeley.edu/pcari'
+STATIC_URL = URL_ROOT + '/static/'
