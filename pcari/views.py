@@ -90,8 +90,10 @@ def create_user(request):
 
 def rate(request, qid):
     user = request.user
-    rating = Rating(user = user)
-    rating.qid = qid
+    try:
+        rating = Rating(user = user, qid = qid)
+    except:
+        rating = Rating.objects.all().filter(user=user,qid=qid)
 
 
     try:
@@ -231,6 +233,8 @@ def logout(request):
 
     context = {
     'translate':TEXT['translate'],
+    'share_description':TEXT['share_description'],
+    'learn_more':TEXT['learn_more'],
     'submit':TEXT['submit_button']
     }
     return render(request, 'logout.html', context)

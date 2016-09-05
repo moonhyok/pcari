@@ -85,7 +85,7 @@
     <center>
       <div class="home-btn-dialog-box">
         <div class="home-btn-title responsive-header">
-          <span class="landing-page-banner">PCARI</span> 
+          <a href="{% url 'pcari:landing' %}" style="cursor: pointer;cursor: hand;"><span class="landing-page-banner">PCARI</span></a> 
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block; text-align: right;">
@@ -108,7 +108,7 @@
             <div class="compare-tag" style="float:left;">
               <!--<div style="font-size: 12px; font-style: italic;font-weight: bolder;" onclick="accounts.hideAll();$('.detail-box-{{k.id}}').show();">{{k.id}}. </div>-->
               <div style="font-size: 18px; font-weight: bolder; padding-top: 15% " class="english">{{tag}}</div>
-              <div style="font-size: 14px; font-weight: bolder;cursor: pointer;cursor: hand;"><span>more info</span></div>
+              <div style="font-size: 14px; font-weight: bolder; cursor: pointer;cursor: hand;"><span>more info</span></div>
             </div>
 
             <div style="cursor: pointer;cursor: hand; float:right; max-height: 55px;" id="sparkLineCanvas{{qid}}" width="320"></div>
@@ -172,9 +172,11 @@
           .attr("class", "bar")
           .attr("fill",function(d){
             if (d.score == {{score}}){
-              return "coral";
+              return "LightSkyBlue";
+              // return "coral";
             } else{
-              return "steelblue";
+              return "LightSlateGray"; 
+              // return "steelblue";
             }
           })
           .attr("x", function(d) { return x{{qid}}(d.score); })

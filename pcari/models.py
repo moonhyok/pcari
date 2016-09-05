@@ -48,6 +48,12 @@ class GeneralSetting(models.Model):
     english_suggest_own = "Suggest Your Own Idea"
     tagalog_suggest_own = "Magmungkahi ng iyong sariling ideya"
 
+    english_share_description = "Please share Malasakit with your friends and family"
+    tagalog_share_description = "Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya"
+
+    english_learn_more = "Learn more about how to be prepared for a disaster"
+    tagalog_learn_more = "Alamin ang iba pang impormasyon kung paano magiging handa sa isang sakuna"
+
     english_short_description = "A project by the CITRIS Connected Communities Initiative at UC Berkeley and the Philippine Commission on Higher Education through the Philippine-California Advanced Research Institutes Project."
     tagalog_short_description = "Isang proyekto ng CITRIS Connected Communities Initiative ng UC Berkeley, at ng Commission on Higher Education ng Pilipinas sa pamamagitan ng Philippine-California Advanced Research Institutes Project"
 
@@ -96,6 +102,8 @@ class GeneralSetting(models.Model):
             'suggest_own': self.english_suggest_own,
             'exit': self.english_exit,
             'rate_more': self.english_rate_more_ideas,
+            'share_description': self.english_share_description,
+            'learn_more': self.english_learn_more,
             'question_of' : self.english_question_of}
         else:
             return {'translate':translate,
@@ -118,6 +126,8 @@ class GeneralSetting(models.Model):
             'suggest_own': self.tagalog_suggest_own,
             'exit': self.tagalog_exit,
             'rate_more': self.tagalog_rate_more_ideas,
+            'share_description': self.tagalog_share_description,
+            'learn_more': self.tagalog_learn_more,
             'question_of' : self.tagalog_question_of}
 
 class QuantitativeQuestion(models.Model):
@@ -154,6 +164,9 @@ class Rating(models.Model):
     score = models.IntegerField(default = -2)
     response = models.CharField(max_length = 1000, default = "")
     accounted = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('user', 'qid')
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)

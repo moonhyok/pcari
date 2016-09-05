@@ -21,7 +21,7 @@
   <center>
     <div class="home-btn-dialog-box landing-navigation">
         <div class="home-btn-title responsive-header">
-          <span class="landing-page-banner">PCARI</span> 
+          <a href="{% url 'pcari:landing' %}" style="cursor: pointer;cursor: hand;"><span class="landing-page-banner">PCARI</span></a> 
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
@@ -34,14 +34,14 @@
     <div class="responsive-body landing-img-txt" style="text-align:left;padding-top: 15px; margin: 10px 10px;">
       <span>{{client_settings.LOGOUT_DIALOG_TEXT}}</span><br/><br/>
       
-      Please share the PCARI system with your friends and family.
+      {{share_description}}
 
       <br></br>
-      <span class="english"><a href="http://twitter.com/intent/tweet?text=How+prepared+are+you+for+a+major+%23quake%3F+Try+QuakeCAFE+developed+by+%40GavinNewsom+%26+%40ken_goldberg+http%3A%2F%2Fquakecafe.org+%40citrisnews" target="_blank" style="color: #555555;"><img src="{% static 'img/cafe/twitter-button.png' %}" width="102px"></a>
+      <span class="english"><a href="http://twitter.com/intent/tweet?text=How+prepared+are+you+for+a+major+%23disaster%3F+Try+Malasakit+developed+by+%40ken_goldberg+http%3A%2F%2Fopinion.berkeley.edu/pcari/pcari/+%40citrisnews" target="_blank" style="color: #555555;"><img src="{% static 'img/cafe/twitter-button.png' %}" width="102px"></a>
         <a href="https://www.facebook.com/dialog/feed?app_id=694165360698061&link=http%3A%2F%2Fquakecafe.org&picture=http%3A%2F%2Fcaliforniareportcard.org%2Fcrc%2Fwp-content%2Fuploads%2FQuakeCAFE_How-Prepared-Are-You_Version1_SM-01.jpg&name=QuakeCAFE&caption=%20&description=How%20prepared%20are%20you%20for%20a%20major%20quake%3F%20Try%20QuakeCAFE%20http%3A%2F%2Fquakecafe.org%20developed%20by%20%40Cal%20%40GavinNewsom%20%26%20%40Ken_Goldberg%20&redirect_uri=http%3A%2F%2Fwww.facebook.com%2F" target="_blank" style="color: #555555;"><img src="{% static 'img/cafe/facebook-button.png' %}" width="102px"></a><br/></span>
 
         <br>
-        Learn more about how to be prepared for the next earthquake:
+        {{learn_more}}
         <ul>
           <li><a href="http://earthquakecountry.org/sevensteps/">Seven Steps to Earthquake Safety</a></li>
           <br>
