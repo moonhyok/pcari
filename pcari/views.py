@@ -140,7 +140,7 @@ def rate(request, qid):
         }
         return render(request, 'rating.html', context)
 
-    return review(request)
+    return personal(request)
 
 def review(request):
     user = request.user
@@ -176,6 +176,16 @@ def help(request):
     'translate':TEXT['translate']
     }
     return render(request, 'help.html', context)
+
+def personal(request):
+    context = {
+    'about':TEXT['about'],
+    'rate_more':TEXT['rate_more'],
+    'suggest_own':TEXT['suggest_own'],
+    'next':TEXT['next_button'],
+    'translate':TEXT['translate']
+    }
+    return render(request, 'personal_data.html', context)
 
 def bloom(request, done = False):
     user = request.user

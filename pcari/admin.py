@@ -19,7 +19,7 @@ def export_comment_csv(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=mymodel.csv'
+    response['Content-Disposition'] = 'attachment; filename=malasakit_comment_data.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
@@ -41,7 +41,7 @@ def export_comment_xlsx(modeladmin, request, queryset):
     import openpyxl
     from openpyxl.cell import get_column_letter
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=malasakit_data.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=malasakit_comment_data.xlsx'
     wb = openpyxl.Workbook()
     ws = wb.get_active_sheet()
     ws.title = "Malasakit Data"
@@ -80,17 +80,18 @@ def export_question_csv(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=mymodel.csv'
+    response['Content-Disposition'] = 'attachment; filename=malasakit_question_data.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    user = User.objects.all()
     writer.writerow([
-        smart_str(u"User"),
+        smart_str(u"Question"),
         smart_str(u"Average_score"),
         smart_str(u"Number_rated"),
     ])
     for obj in queryset:
         writer.writerow([
-            smart_str(obj.user),
+            smart_str(obj.question),
             smart_str(obj.average_score),
             smart_str(obj.number_rated),
         ])
@@ -102,7 +103,7 @@ def export_question_xlsx(modeladmin, request, queryset):
     import openpyxl
     from openpyxl.cell import get_column_letter
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=malasakit_data.xlsx'
+    response['Content-Disposition'] = 'attachment; filename=malasakit_question_data.xlsx'
     wb = openpyxl.Workbook()
     ws = wb.get_active_sheet()
     ws.title = "Malasakit Data"

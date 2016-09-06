@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^comment/$', views.comment, name='comment'),
     url(r'^help/$', views.help, name='help'),
     url(r'^switch/$', views.switch_language, name='switch_language'),
+    url(r'^personal/$', views.switch_language, name='personal'),
     url(r'^logout/$', views.logout, name='logout')
 ]
