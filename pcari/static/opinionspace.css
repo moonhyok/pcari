@@ -1709,8 +1709,6 @@ table.pretty caption {
 	-webkit-transform: translateZ(0);
 }
 textarea{
-	float:right;
-	margin-right:15%;
 	font-size:20px;
 	outline: none;
 	box-sizing: border-box;

@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth import logout
 
 import json
 import random
@@ -143,31 +144,33 @@ def rate(request, qid):
     return personal(request)
 
 def review(request):
-    try:
-        int(request.POST['age'])
-        if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
-            context = {
-            'error':"Please enter the following data",
-            'about':TEXT['about'],
-            'rate_more':TEXT['rate_more'],
-            'suggest_own':TEXT['suggest_own'],
-            'next':TEXT['next_button'],
-            'translate':TEXT['translate']
-            }
-            return render(request, 'personal_data.html', context)
-    except:
-        context = {
-            'error':"Please enter a valid age",
-            'about':TEXT['about'],
-            'rate_more':TEXT['rate_more'],
-            'suggest_own':TEXT['suggest_own'],
-            'next':TEXT['next_button'],
-            'translate':TEXT['translate']
-            }
-        return render(request, 'personal_data.html', context)    
-
     user = request.user
-    userdata = UserData(user=user, age=request.POST['age'], barangay=request.POST['barangay'], gender=request.POST['gender'])
+    if not UserData.objects.all().filter(user=user).exists():
+        try:
+            int(request.POST['age'])
+            if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
+                context = {
+                'error':"Please enter the following data",
+                'about':TEXT['about'],
+                'rate_more':TEXT['rate_more'],
+                'suggest_own':TEXT['suggest_own'],
+                'next':TEXT['next_button'],
+                'translate':TEXT['translate']
+                }
+                return render(request, 'personal_data.html', context)
+        except:    
+            context = {
+                'error':"Please enter a valid age",
+                'about':TEXT['about'],
+                'rate_more':TEXT['rate_more'],
+                'suggest_own':TEXT['suggest_own'],
+                'next':TEXT['next_button'],
+                'translate':TEXT['translate']
+                }
+            return render(request, 'personal_data.html', context)    
+
+        userdata = UserData(user=user, age=request.POST['age'], barangay=request.POST['barangay'], gender=request.POST['gender'])
+        userdata.save()
     progression = UserProgression.objects.all().filter(user=user)[0]
     progression.review = True
     progression.save()
@@ -185,8 +188,8 @@ def review(request):
     'translate':TEXT['translate'],
     'graph_description':TEXT['graph_description'],
     'next':TEXT['next_button'],
+    'more_info':TEXT['more_info'],
     'tags':tag,
-    'heigh':60,
     'n':q.count()
     }
     return render(request, 'review.html', context)
@@ -202,6 +205,10 @@ def help(request):
     return render(request, 'help.html', context)
 
 def personal(request):
+    user = request.user
+    progression = UserProgression.objects.all().filter(user=user)[0]
+    progression.personal_data = True
+    progression.save()
     context = {
     'about':TEXT['about'],
     'rate_more':TEXT['rate_more'],
@@ -220,16 +227,20 @@ def bloom(request, done = False):
     # comments = map(lambda x: x.id, Comment.objects.all())
     comments = Comment.objects.all()
     if done:
-        data = [{"cid":0,"x_seed":0,"y_seed":0,"shift":0}]
+        data = [{"cid":0,"x_seed":0,"y_seed":0,"shift":0,"n":0}]
     else:
         data = []
 
     # List of Data
     already_seen = map(lambda x: x.id, CommentRating.objects.all().filter(user=user))
+    n = 1
     for c in comments:
+        if n > 8:
+            break
         if c.id in already_seen:
             continue
-        data.append({"cid":c.id,"x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1 })
+        data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
+        n += 1
 
     context = {
     'translate':TEXT['translate'],
@@ -262,7 +273,7 @@ def logout(request):
     try:
         c.comment = request.POST['comment']
         c.save()
-        logout(request)
+        # logout(request)
     except:
         pass
 

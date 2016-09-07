@@ -22,7 +22,7 @@
   <center>
   <div class="home-btn-dialog-box landing-navigation">
         <div class="home-btn-title responsive-header">
-        <a href="{% url 'pcari:landing' %}" style="cursor: pointer;cursor: hand;"><span class="landing-page-banner">PCARI</span></a>
+        <a href="{% url 'pcari:landing' %}" style="cursor: pointer;cursor: hand;"><span class="landing-page-banner">Malasakit</span></a>
         </div>
 
         <div class="home-btn-wrapper" style="width:35%;display:inline-block;">
@@ -51,7 +51,7 @@ text {
 
 var circleData = {{ comment_data|safe }};
 
-var margin = {top: 60, right: 80, bottom: 100, left: 80},
+var margin = {top: 60, right: 80, bottom: 150, left: 80},
     width = $(window).width() - margin.right - margin.left,
     height = $(window).height() - margin.top - margin.bottom;
 
@@ -144,8 +144,18 @@ circle.enter().append("svg:image")
       };})
     // .attr("width", function(d) {return(100*[0.6,0.8,1,1.2,1.4][Math.floor(Math.random() * 5)])+"";})
     // .attr("height", function(d) {return(100*[0.6,0.8,1,1.2,1.4][Math.floor(Math.random() * 5)])+"";})
-    .attr("x",function(d) { return width/2.5;})
-    .attr("y",function(d) { return height/2.5;})
+    .attr("x",function(d) {
+      if (d.cid==0){
+        return width/2.5-25;
+      } else {
+        return width/2.5;
+      };})
+    .attr("y",function(d) { 
+      if (d.cid==0){
+        return height/2.5-50;
+      } else {
+        return height/2.5;
+      };})
     .style("cursor","pointer")
     .style("cursor","hand")
     .on("click", post)
@@ -181,7 +191,7 @@ circle.enter().append("svg:image")
       };})
     .transition()
       .duration(1000)
-      .delay(function(d) { return d.cid * 40; })
+      .delay(function(d) { return d.n * 40; })
       .on("start", slide2);
 
 function slide(d) {
@@ -215,9 +225,7 @@ function slide2(d) {
       h = height*d.y_seed-50
       s = d.shift;
 
-  // var w = width*Math.random(),
-  //     h = height*Math.random(),
-  //     s = Math.random() * (1 + 1) - 1;
+
 
   d3.active(this)
       .attr("x", w+2*10*s)
@@ -229,6 +237,8 @@ function slide2(d) {
       .attr("x", w+10*s)
       .attr("y", h+10*s);
   d3.select(this).classed("active", false);
+  // console.log("x,y"+(w+10*s)+" "+(h+10*s)+" s is " + s+" and did is " +d.cid);
+  console.log(d);
 }
 
 function post(d) {

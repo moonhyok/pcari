@@ -185,7 +185,7 @@ class CommentRating(models.Model):
     date = models.DateTimeField(auto_now_add = True)
 
 class UserProgression(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now_add = True)
     landing = models.BooleanField(default=False)
     rating = models.BooleanField(default=False)
@@ -194,6 +194,7 @@ class UserProgression(models.Model):
     bloom = models.BooleanField(default=False)
     peer_rating = models.BooleanField(default=False)
     num_peer_rated = models.IntegerField(default=0)
+    personal_data = models.BooleanField(default=False)
     comment = models.BooleanField(default=False)
     logout = models.BooleanField(default=False)
     completion_rate = models.IntegerField(default = 0)
