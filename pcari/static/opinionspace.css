@@ -1708,10 +1708,26 @@ table.pretty caption {
 	height: 100%;
 	-webkit-transform: translateZ(0);
 }
+textarea{
+	float:right;
+	margin-right:15%;
+	font-size:20px;
+	outline: none;
+	box-sizing: border-box;
+	border-radius:.6em;
+	border-color:rgb(170, 170, 170);
+}
+
+textarea:focus{
+	box-shadow: 0 0 3px 2px #0066cc;
+}
 /*.loading {
 	display: block;
+
 	height: 100%;
+
 	width: 50%;
+
 	margin: 0 auto;
 	text-align: center;
 }

@@ -145,7 +145,7 @@ class QualitativeQuestion(models.Model):
     tagalog_question = models.CharField(max_length=500, default="walang tagalog pagsasalin")
 
 class UserData(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
     age = models.IntegerField(default=0)
     barangay = models.CharField(max_length=500, default="")
     GENDER_CHOICES = (

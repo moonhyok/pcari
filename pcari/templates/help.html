@@ -53,9 +53,9 @@ function goBack() {
         {{suggest_own}}
       </div>
 
-      <div class="burger-div burger-div-logout">
+      <a href="{% url 'pcari:logout' %}" style="text-decoration: none;"><div class="burger-div burger-div-logout">
         {{exit}}
-      </div>
+      </div></a>
     </div>
   </div>
 </center>

@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import loader
-from pcari.models import  QuantitativeQuestion, QualitativeQuestion, Rating, UserProgression, Comment, CommentRating, GeneralSetting
+from pcari.models import  QuantitativeQuestion, QualitativeQuestion, Rating, UserProgression, Comment, CommentRating, GeneralSetting, UserData
 from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -143,7 +143,31 @@ def rate(request, qid):
     return personal(request)
 
 def review(request):
+    try:
+        int(request.POST['age'])
+        if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
+            context = {
+            'error':"Please enter the following data",
+            'about':TEXT['about'],
+            'rate_more':TEXT['rate_more'],
+            'suggest_own':TEXT['suggest_own'],
+            'next':TEXT['next_button'],
+            'translate':TEXT['translate']
+            }
+            return render(request, 'personal_data.html', context)
+    except:
+        context = {
+            'error':"Please enter a valid age",
+            'about':TEXT['about'],
+            'rate_more':TEXT['rate_more'],
+            'suggest_own':TEXT['suggest_own'],
+            'next':TEXT['next_button'],
+            'translate':TEXT['translate']
+            }
+        return render(request, 'personal_data.html', context)    
+
     user = request.user
+    userdata = UserData(user=user, age=request.POST['age'], barangay=request.POST['barangay'], gender=request.POST['gender'])
     progression = UserProgression.objects.all().filter(user=user)[0]
     progression.review = True
     progression.save()
@@ -238,6 +262,7 @@ def logout(request):
     try:
         c.comment = request.POST['comment']
         c.save()
+        logout(request)
     except:
         pass
 
@@ -245,7 +270,7 @@ def logout(request):
     'translate':TEXT['translate'],
     'share_description':TEXT['share_description'],
     'learn_more':TEXT['learn_more'],
-    'submit':TEXT['submit_button']
+    'exit':TEXT['exit']
     }
     return render(request, 'logout.html', context)
 
