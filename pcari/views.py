@@ -114,8 +114,8 @@ def rate(request, qid):
     progression.num_rated += 1
     progression.save()
 
-    print progression.num_rated
-    print "num rated \n"
+    # print progression.num_rated
+    # print "num rated \n"
 
     if progression.num_rated < Q_COUNT:
         if progression.num_rated < QUAN_COUNT:
