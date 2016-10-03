@@ -69,10 +69,9 @@ def create_user(request):
     #Data Initialization
     progression = UserProgression(user = user)
     progression.landing = True
-    
-    q = QUAN_QUESTIONS[progression.num_rated]
-
     progression.save()
+
+    q = QUAN_QUESTIONS[progression.num_rated]
 
     question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
