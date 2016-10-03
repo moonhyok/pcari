@@ -58,7 +58,7 @@ def landing(request):
 def create_user(request):
 
     #User Authentication
-    uid = UserProgression.objects.all().count()
+    uid = User.objects.all().count()
     new_user = User.objects.create_user('%d' % uid,'%d@example.com' % uid,'%d' % uid)
     new_user.save()
     
