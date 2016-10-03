@@ -219,7 +219,7 @@ class UserProgression(models.Model):
     bloom = models.BooleanField(default=False)
     peer_rating = models.BooleanField(default=False)
     num_peer_rated = models.IntegerField(default=0)
-    personal_data = models.BooleanField(default=False)
+    personal_data = models.BooleanField(default=False, null=True)
     comment = models.BooleanField(default=False)
     logout = models.BooleanField(default=False)
     completion_rate = models.IntegerField(default = 0)
