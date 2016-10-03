@@ -155,6 +155,11 @@ def review(request):
                 'rate_more':TEXT['rate_more'],
                 'suggest_own':TEXT['suggest_own'],
                 'next':TEXT['next_button'],
+                'age':TEXT['age'],
+                'gender':TEXT['gender'],
+                'male':TEXT['male'],
+                'female':TEXT['female'],
+                'select':TEXT['select'],
                 'translate':TEXT['translate']
                 }
                 return render(request, 'personal_data.html', context)
@@ -165,12 +170,18 @@ def review(request):
                 'rate_more':TEXT['rate_more'],
                 'suggest_own':TEXT['suggest_own'],
                 'next':TEXT['next_button'],
+                'age':TEXT['age'],
+                'gender':TEXT['gender'],
+                'male':TEXT['male'],
+                'female':TEXT['female'],
+                'select':TEXT['select'],
                 'translate':TEXT['translate']
                 }
             return render(request, 'personal_data.html', context)    
 
         userdata = UserData(user=user, age=request.POST['age'], barangay=request.POST['barangay'], gender=request.POST['gender'])
         userdata.save()
+
     progression = UserProgression.objects.all().filter(user=user)[0]
     progression.review = True
     progression.save()
@@ -186,6 +197,7 @@ def review(request):
 
     context = {
     'translate':TEXT['translate'],
+    'language':True if TEXT['translate'] == "English" else False,
     'graph_description':TEXT['graph_description'],
     'next':TEXT['next_button'],
     'more_info':TEXT['more_info'],
@@ -214,6 +226,11 @@ def personal(request):
     'rate_more':TEXT['rate_more'],
     'suggest_own':TEXT['suggest_own'],
     'next':TEXT['next_button'],
+    'age':TEXT['age'],
+    'gender':TEXT['gender'],
+    'male':TEXT['male'],
+    'female':TEXT['female'],
+    'select':TEXT['select'],
     'translate':TEXT['translate']
     }
     return render(request, 'personal_data.html', context)
@@ -245,6 +262,7 @@ def bloom(request, done = False):
     context = {
     'translate':TEXT['translate'],
     'bloom_description':TEXT['bloom_description'],
+    'language':True if TEXT['translate'] == "English" else False,
     'comment_data':data,
     'done':done
     }

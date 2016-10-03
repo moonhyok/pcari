@@ -49,6 +49,12 @@ text {
 
 <script>
 
+{% if language %}
+  var lang = "English";
+{% else %}
+  var lang = "Tagalog";
+{% endif %}
+
 var circleData = {{ comment_data|safe }};
 
 var margin = {top: 60, right: 80, bottom: 150, left: 80},
@@ -126,6 +132,9 @@ var circle = svg.selectAll("circle")
 circle.enter().append("svg:image")
     .attr("xlink:href", function(d) {
       if (d.cid==0){
+        if (lang == "English"){
+          return "{% static 'img/cafe/cafe_ball_tagalog_you.png' %}"
+        }
         return "{% static 'img/cafe/cafe_ball_you.png' %}"
       } else {
         return "{% static 'img/cafe/cafe6.png' %}"

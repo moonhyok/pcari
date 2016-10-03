@@ -60,6 +60,21 @@ class GeneralSetting(models.Model):
     english_scale_description = "0 (strongly disagree) to 9 (strongly agree)"
     tagalog_scale_description = "Mula 0 (hinding-hindi ako sumasang-ayon) hanggang 9 (lubos akong sumasang-ayon)"
 
+    english_age = "Age"
+    tagalog_age = "Susunod"
+
+    english_gender = "Gender"
+    tagalog_gender = "Edad"
+
+    english_select = "Select"
+    tagalog_select = "Pili ang"
+
+    english_male = "Male"
+    tagalog_male = "Lalaki"
+
+    english_female = "Female"
+    tagalog_female = "Babae"
+
     tagalog_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
     tagalog_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
     tagalog_graph_description = models.CharField(max_length=500, default="no translation provided")
@@ -104,6 +119,11 @@ class GeneralSetting(models.Model):
             'rate_more': self.english_rate_more_ideas,
             'share_description': self.english_share_description,
             'learn_more': self.english_learn_more,
+            "age": self.english_age,
+            "gender": self.english_gender,
+            "select": self.english_select,
+            "male": self.english_male,
+            "female": self.english_female,
             'question_of' : self.english_question_of}
         else:
             return {'translate':translate,
@@ -128,6 +148,11 @@ class GeneralSetting(models.Model):
             'rate_more': self.tagalog_rate_more_ideas,
             'share_description': self.tagalog_share_description,
             'learn_more': self.tagalog_learn_more,
+            "age": self.tagalog_age,
+            "gender": self.tagalog_gender,
+            "select": self.tagalog_select,
+            "male": self.tagalog_male,
+            "female": self.tagalog_female,
             'question_of' : self.tagalog_question_of}
 
 class QuantitativeQuestion(models.Model):

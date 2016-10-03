@@ -50,7 +50,7 @@
           <form action="{% url 'pcari:review' %}" method="POST">
             {% csrf_token %}
             <div style="width: 50%; padding-bottom:10%;">
-              <div style="float:left; margin-left:15%; font-size:20px;"><span>Age</span></div>
+              <div style="float:left; margin-left:15%; font-size:20px;"><span>{{age}}</span></div>
               <textarea style="float:right; margin-right:15%;" name='age' maxlength="10"></textarea>
             </div>
             </br></br>
@@ -60,11 +60,11 @@
             </div>
             </br></br>
             <div style="width: 50%; padding-bottom:10%">
-              <div style="float:left; margin-left:15%; font-size:20px;"><span>Gender</span></div>
+              <div style="float:left; margin-left:15%; font-size:20px;"><span>{{gender}}</span></div>
               <select name="gender" style="border-radius:1em;font-size:20px;height:52px;width:222px;float:right;margin-right:15%;">
-                <option value="">Select Gender</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
+                <option value="">{{select}} {{gender}}</option>
+                <option value="M">{{male}}</option>
+                <option value="F">{{female}}</option>
               </select>
               <!-- <textarea name='gender' maxlength="6"></textarea> -->
             </div>
