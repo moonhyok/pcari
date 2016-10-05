@@ -43,19 +43,22 @@ function goBack() {
         {{about}}
       </div>
 
-      <div class="burger-div burger-div-others">
-      <!-- <div class="burger-div burger-div-others" style="display: none;"> -->
-        {{rate_more}}
-      </div>
+      <a href="{% url 'pcari:comment' %}" style="text-decoration: none;">
+        <div class="burger-div burger-div-others">
+          {{rate_more}}
+        </div>
+      </a>
+      <a href="{% url 'pcari:comment' %}" style="text-decoration: none;">
+        <div class="burger-div burger-div-yours">
+          {{suggest_own}}
+        </div>
+      </a>
 
-      <div class="burger-div burger-div-yours">
-      <!-- <div class="burger-div burger-div-yours" style="display: none;"> -->
-        {{suggest_own}}
-      </div>
-
-      <a href="{% url 'pcari:logout' %}" style="text-decoration: none;"><div class="burger-div burger-div-logout">
-        {{exit}}
-      </div></a>
+      <a href="{% url 'pcari:logout' %}" style="text-decoration: none;">
+        <div class="burger-div burger-div-logout">
+          {{exit}}
+        </div>
+      </a>
     </div>
   </div>
 </center>
