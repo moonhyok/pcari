@@ -129,5 +129,5 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 # STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 URL_ROOT = 'http://opinion.berkeley.edu/pcari'
-STATIC_ROOT = URL_ROOT
+STATIC_ROOT = "/pcari/static/"
 STATIC_URL = URL_ROOT + '/static/'
