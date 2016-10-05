@@ -194,20 +194,26 @@ class Rating(models.Model):
         unique_together = ('user', 'qid')
 
 class Comment(models.Model):
+    LANGUAGE_CHOICES = (
+    ('English', 'English'),
+    ('Tagalog', 'Tagalog'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
-    comment = models.CharField(max_length = 1000, default = "", null = True)
-    tagalog_comment = models.CharField(max_length = 1000, default = "", null = True)
+    comment = models.CharField(max_length = 1000, default = "", null = True, blank=True)
+    tagalog_comment = models.CharField(max_length = 1000, default = "", null = True, blank=True)
     date = models.DateTimeField(auto_now_add = True)
     average_score = models.FloatField(default = 0)
     number_rated = models.IntegerField(default = 0)
     tag = models.CharField(max_length=200, default = "", null=True)
-    accounted = models.BooleanField(default=False)
+    original_language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, null=True, blank=True)
 
 class CommentRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
     cid = models.IntegerField(default = -1)
     score = models.IntegerField(default = 0)
     date = models.DateTimeField(auto_now_add = True)
+    accounted = models.BooleanField(default=False)
 
 class UserProgression(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)

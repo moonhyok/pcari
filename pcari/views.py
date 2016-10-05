@@ -299,6 +299,10 @@ def logout(request):
     c = Comment(user=user)
     try:
         c.comment = request.POST['comment']
+        if TEXT['translate'] == "Tagalog":
+            c.original_language = "English"
+        else:
+            c.original_language = "Tagalog"
         c.save()
         # logout(request)
     except:
@@ -311,6 +315,7 @@ def logout(request):
     'exit':TEXT['exit']
     }
     generate()
+    comment_update()
     return render(request, 'logout.html', context)
 
 def get_comment(request):
@@ -395,4 +400,36 @@ def generate():
                     datafile.write("skip"+" "+str(r_count[j])+"\n")
                 else:
                     datafile.write(str(j)+" "+str(r_count[j])+"\n")
+
+def comment_update():
+    comments = Comment.objects.all()
+
+    for comment in comments:
+        ratings = CommentRating.objects.all().filter(cid=comment.id, accounted=False)
+        current_ave = comment.average_score * comment.number_rated
+        for rating in ratings:
+            current_ave += rating.score
+            rating.accounted = True
+            rating.save()
+        comment.number_rated += len(ratings)
+        if comment.number_rated == 0:
+            continue
+        comment.average_score = current_ave/comment.number_rated
+        comment.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
