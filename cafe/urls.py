@@ -19,4 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^', include('pcari.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^pcari/', include('pcari.urls')),
 ]
