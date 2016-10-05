@@ -237,9 +237,12 @@ def personal(request):
 
 def bloom(request, done = False):
     user = request.user
-    progression = UserProgression.objects.all().filter(user=user)[0]
-    progression.bloom = True
-    progression.save()
+    try:
+        progression = UserProgression.objects.all().filter(user=user)[0]
+        progression.bloom = True
+        progression.save()
+    except:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     # comments = map(lambda x: x.id, Comment.objects.all())
     comments = Comment.objects.all()
@@ -270,9 +273,12 @@ def bloom(request, done = False):
 
 def comment(request):
     user = request.user
-    progression = UserProgression.objects.all().filter(user=user)[0]
-    progression.comment = True
-    progression.save()
+    try:
+        progression = UserProgression.objects.all().filter(user=user)[0]
+        progression.comment = True
+        progression.save()
+    except:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     context = {
     'translate':TEXT['translate'], 
@@ -283,9 +289,12 @@ def comment(request):
 
 def logout(request):
     user = request.user
-    progression = UserProgression.objects.all().filter(user=user)[0]
-    progression.logout = True
-    progression.save()
+    try:
+        progression = UserProgression.objects.all().filter(user=user)[0]
+        progression.logout = True
+        progression.save()
+    except:
+        pass
 
     c = Comment(user=user)
     try:
@@ -344,6 +353,9 @@ def rate_comment(request, cid):
         return bloom(request,done=True)
 
     return bloom(request)
+
+def about(request):
+    return render(request, 'about.html', {})
 
 def update_ratings(user):
     questions = QuantitativeQuestion.objects.all()

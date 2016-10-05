@@ -37,30 +37,15 @@ function goBack() {
         </div>
       </div>
 
-      <div style="max-width: 620px; width: 100%; border: 2px solid white;margin-top: 10px;">
+      <div class="landing-img-txt responsive-body" style="margin-top: 10%">   
 
-      <a href="{% url 'pcari:about' %}" style="text-decoration: none;">
-        <div class="burger-div burger-div-about">
-          {{about}}
-        </div>
-      </a>
+          <span class="english">Many existing Philippine government initiated practices take a top down approach to knowledge  sharing, treating local communities as passive clients instead of active partners.  Bottom up e-government approaches that actively engage local community members, combined with emerging  ICT technologies, have great potential to enhance existing practices and effectively identify and  address the perspectives, motivations and priorities of local communities.  Providing an electronic  and participatory assessment digital toolkit could improve policymaking processes as well as make  government policies more relevant to citizens.</span>
 
-      <a href="{% url 'pcari:bloom' %}" style="text-decoration: none;">
-        <div class="burger-div burger-div-others">
-          {{rate_more}}
-        </div>
-      </a>
-      <a href="{% url 'pcari:comment' %}" style="text-decoration: none;">
-        <div class="burger-div burger-div-yours">
-          {{suggest_own}}
-        </div>
-      </a>
+          <br>
+          <br>
+          <span style="font-weight: bold;"> PCARI</span>
 
-      <a href="{% url 'pcari:logout' %}" style="text-decoration: none;">
-        <div class="burger-div burger-div-logout">
-          {{exit}}
         </div>
-      </a>
     </div>
   </div>
 </center>
