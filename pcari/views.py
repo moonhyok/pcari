@@ -296,8 +296,9 @@ def logout(request):
     except:
         pass
 
-    c = Comment(user=user)
+    
     try:
+        c = Comment(user=user)
         c.comment = request.POST['comment']
         if TEXT['translate'] == "Tagalog":
             c.original_language = "English"
