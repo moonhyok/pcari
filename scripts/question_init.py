@@ -1,7 +1,7 @@
 # Include this line at the beginning of every script.
 import environment
 
-from pcari.models import QuantitativeQuestion, QualitativeQuestion
+from pcari.models import QuantitativeQuestion, QualitativeQuestion, User
 
 english_question=[
 "I have suffered the consequence of a typhoon or flood",
@@ -28,3 +28,9 @@ tagalog_question=[
 for i in range(len(english_question)):
 	new_q = QuantitativeQuestion(question=english_question[i],tagalog_question=tagalog_question[i])
 	new_q.save()
+
+
+admin = User.objects.all()[0]
+for q in QuantitativeQuestion.objects.all():
+	for score in range(-1,10):
+		r = Rating(user=admin,score=score,qid=q.id)
