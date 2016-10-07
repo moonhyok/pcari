@@ -395,7 +395,7 @@ def generate():
 				r_count[10] += 1
 
 
-		with open("pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
+		with open("/var/www/opinion/opinion.berkeley.edu/pcari/pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
 			datafile.write("score	count\n")
 			for j in range(len(r_count)):
 				if j == len(r_count)-1:
