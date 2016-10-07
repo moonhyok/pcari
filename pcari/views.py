@@ -396,12 +396,12 @@ def generate():
 
 
 		with open("pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
-			datafile.write("score		count\n")
+			datafile.write("score	count\n")
 			for j in range(len(r_count)):
 				if j == len(r_count)-1:
-					datafile.write("skip"+"		"+str(r_count[j])+"\n")
+					datafile.write("skip"+"	"+str(r_count[j])+"\n")
 				else:
-					datafile.write(str(j)+"		"+str(r_count[j])+"\n")
+					datafile.write(str(j)+"	"+str(r_count[j])+"\n")
 
 def comment_update():
 	comments = Comment.objects.all()
