@@ -181,7 +181,7 @@
         .enter().append("rect")
           .attr("class", "bar")
           .attr("fill",function(d){
-            if (d.score == {{score}}){
+            if (d.score == {{score}} || ((d.score == "skip" || d.score == "lundag") && {{score}} == "-1") ){
               return "LightSkyBlue";
               // return "coral";
             } else{
