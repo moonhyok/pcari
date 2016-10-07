@@ -1,4 +1,4 @@
-import environment
+# import environment
 
 from pcari.models import QuantitativeQuestion, Rating
 
