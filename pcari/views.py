@@ -149,8 +149,12 @@ def review(request):
 		try:
 			int(request.POST['age'])
 			if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
+				if TEXT['translate'] == "Tagalog":
+					msg = "Please enter the following fields"
+				else:
+					msg = "Tagalog need fields"
 				context = {
-				'error':"Please enter the following data",
+				'error':msg,
 				'about':TEXT['about'],
 				'rate_more':TEXT['rate_more'],
 				'suggest_own':TEXT['suggest_own'],
@@ -164,8 +168,12 @@ def review(request):
 				}
 				return render(request, 'personal_data.html', context)
 		except:    
+			if TEXT['translate'] == "Tagalog":
+				msg = "Please enter a valid age"
+			else:
+				msg = "Tagalog valid age"
 			context = {
-				'error':"Please enter a valid age",
+				'error':msg,
 				'about':TEXT['about'],
 				'rate_more':TEXT['rate_more'],
 				'suggest_own':TEXT['suggest_own'],

@@ -26,10 +26,6 @@ a {
 	color: #442b10 !important;
 }
 
-body{
-	background-image:url('img/cafe/capitol-landing.png');
-	background-size: cover;
-}
 
 .landing {
 	position: absolute;
@@ -438,7 +434,6 @@ table.pretty caption {
 
 		body {
 			/*font-family: "Helvetica Neue", novecento-normal, sans-serif;*/
-			background: #76b9b6;
 			height: 100%;
 			padding: 0 !important;
 			/* use helvetica neue, bootstrap style */
