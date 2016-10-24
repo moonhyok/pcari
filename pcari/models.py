@@ -17,12 +17,25 @@ class GeneralSetting(models.Model):
     default_language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, default="English")
 
     english_landing_description = models.CharField(max_length=500, default="Take a minute to see how prepared you are and join the %d others who have visited so far in an online discussion about preparedness.")
+    tagalog_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
+
     english_question_description = models.CharField(max_length=500, default="Please select how strongly you agree with the following statement")
+    tagalog_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
+
     english_graph_description = models.CharField(max_length=500, default="Here's how you compare with others")
+    tagalog_graph_description = models.CharField(max_length=500, default="no translation provided")
+
     english_peer_evaluation_description = models.CharField(max_length=500, default="How helpful is this suggestion? ")
+    tagalog_peer_evaluation_description = models.CharField(max_length=500, default="Gaano ka halaga ang mungkahing ito?")
+
     english_comment_description = models.CharField(max_length=500, default="How could your Barangay help you better prepare for a disaster?")
+    tagalog_comment_description = models.CharField(max_length=500, default="Sa papaanong pamamaraan makakatulong ang inyong barangay upang higit na maging handa ka para sa isang kalamidad")
+
     english_feedback_description = models.CharField(max_length=500, default="At the end you'll have a chance to give us more feedback")
+    tagalog_feedback_description = models.CharField(max_length=500, default="Sa dulo, mabibigyan ka ng pagkakataon na magbigay ng iyong mungkahing ideya")
+
     english_bloom_description = models.CharField(max_length=500, default="Each sphere below represents an idea proposed by another user")
+    tagalog_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba")
 
     english_begin_button = "Begin"
     english_skip_button = "Skip"
@@ -30,64 +43,59 @@ class GeneralSetting(models.Model):
     english_post_button = "Post"
     english_submit_button = "Submit"
 
-    english_question_of = "Question %d of %d"
-    tagalog_question_of = "Ika-%d ng %d katanungan"
-
-    english_about_pcari = "About PCARI"
-    tagalog_about_pcari = "Tungkol sa PCARI"
-
-    english_rate_more_ideas = "Rate More Ideas"
-    tagalog_rate_more_ideas = "Bigyan ng grado ang iba pang ideya"
-
-    english_exit = "Exit"
-    tagalog_exit = "Lumabas"
-
-    english_more_info = "More Information"
-    tagalog_more_info = "Iba pang impormasyon"
-
-    english_suggest_own = "Suggest Your Own Idea"
-    tagalog_suggest_own = "Magmungkahi ng iyong sariling ideya"
-
-    english_share_description = "Please share Malasakit with your friends and family"
-    tagalog_share_description = "Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya"
-
-    english_learn_more = "Learn more about how to be prepared for a disaster"
-    tagalog_learn_more = "Alamin ang iba pang impormasyon kung paano magiging handa sa isang sakuna"
-
-    english_short_description = "A project by the CITRIS Connected Communities Initiative at UC Berkeley and the Philippine Commission on Higher Education through the Philippine-California Advanced Research Institutes Project."
-    tagalog_short_description = "Isang proyekto ng CITRIS Connected Communities Initiative ng UC Berkeley, at ng Commission on Higher Education ng Pilipinas sa pamamagitan ng Philippine-California Advanced Research Institutes Project"
-
-    english_scale_description = "0 (strongly disagree) to 9 (strongly agree)"
-    tagalog_scale_description = "Mula 0 (hinding-hindi ako sumasang-ayon) hanggang 9 (lubos akong sumasang-ayon)"
-
-    english_age = "Age"
-    tagalog_age = "Susunod"
-
-    english_gender = "Gender"
-    tagalog_gender = "Edad"
-
-    english_select = "Select"
-    tagalog_select = "Pili ang"
-
-    english_male = "Male"
-    tagalog_male = "Lalaki"
-
-    english_female = "Female"
-    tagalog_female = "Babae"
-
-    tagalog_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
-    tagalog_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
-    tagalog_graph_description = models.CharField(max_length=500, default="no translation provided")
-    tagalog_peer_evaluation_description = models.CharField(max_length=500, default="Gaano ka halaga ang mungkahing ito?")
-    tagalog_comment_description = models.CharField(max_length=500, default="Sa papaanong pamamaraan makakatulong ang inyong barangay upang higit na maging handa ka para sa isang kalamidad")
-    tagalog_feedback_description = models.CharField(max_length=500, default="Sa dulo, mabibigyan ka ng pagkakataon na magbigay ng iyong mungkahing ideya")
-    tagalog_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba")
-
     tagalog_begin_button = models.CharField(max_length=20, default="Simulan")
     tagalog_skip_button = models.CharField(max_length=20, default="Laktawan")
     tagalog_next_button = models.CharField(max_length=20, default="Susunod")
     tagalog_post_button = models.CharField(max_length=20, default="Ipasa")
     tagalog_submit_button = models.CharField(max_length=20, default="Isumite")
+
+    english_question_of = "Question %d of %d"
+    tagalog_question_of = "Ika-%d ng %d katanungan"
+
+    english_about_pcari = models.CharField(max_length=30, default="About PCARI")
+    tagalog_about_pcari = models.CharField(max_length=30, default="Tungkol sa PCARI")
+
+    english_rate_more_ideas = models.CharField(max_length=30, default="Rate More Ideas")
+    tagalog_rate_more_ideas = models.CharField(max_length=30, default="Bigyan ng grado ang iba pang ideya")
+
+    english_exit = models.CharField(max_length=30, default="Exit")
+    tagalog_exit = models.CharField(max_length=30, default="Lumabas")
+
+    english_more_info = models.CharField(max_length=30, default="More Information")
+    tagalog_more_info = models.CharField(max_length=30, default="Iba pang impormasyon")
+
+    english_suggest_own = models.CharField(max_length=30, default="Suggest Your Own Idea")
+    tagalog_suggest_own = models.CharField(max_length=30, default="Magmungkahi ng iyong sariling ideya")
+
+    english_share_description = models.CharField(max_length=300, default="Please share Malasakit with your friends and family")
+    tagalog_share_description = models.CharField(max_length=300, default="Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya")
+
+    english_learn_more = models.CharField(max_length=300, default="Learn more about how to be prepared for a disaster")
+    tagalog_learn_more = models.CharField(max_length=300, default="Alamin ang iba pang impormasyon kung paano magiging handa sa isang sakuna")
+
+    english_short_description = models.CharField(max_length=300, default="A project by the CITRIS Connected Communities Initiative at UC Berkeley and the Philippine Commission on Higher Education through the Philippine-California Advanced Research Institutes Project.")
+    tagalog_short_description = models.CharField(max_length=300, default="Isang proyekto ng CITRIS Connected Communities Initiative ng UC Berkeley, at ng Commission on Higher Education ng Pilipinas sa pamamagitan ng Philippine-California Advanced Research Institutes Project")
+
+    english_scale_description = models.CharField(max_length=300, default="0 (strongly disagree) to 9 (strongly agree)")
+    tagalog_scale_description = models.CharField(max_length=300, default="Mula 0 (hinding-hindi ako sumasang-ayon) hanggang 9 (lubos akong sumasang-ayon)")
+
+    english_age = models.CharField(max_length=30, default="Age")
+    tagalog_age = models.CharField(max_length=30, default="Susunod")
+
+    english_gender = models.CharField(max_length=30, default="Gender")
+    tagalog_gender = models.CharField(max_length=30, default="Edad")
+
+    english_select = models.CharField(max_length=30, default="Select")
+    tagalog_select = models.CharField(max_length=30, default="Pili ang")
+
+    english_male = models.CharField(max_length=30, default="Male")
+    tagalog_male = models.CharField(max_length=30, default="Lalaki")
+
+    english_female = models.CharField(max_length=30, default="Female")
+    tagalog_female = models.CharField(max_length=30, default="Babae")
+
+    english_error = models.CharField(max_length=300, default="Please enter the following fields")
+    tagalog_error = models.CharField(max_length=300, default="(TAGALOG) Please enter the following fields")
 
 
     def get_text(self, language = None):
@@ -124,6 +132,7 @@ class GeneralSetting(models.Model):
             "select": self.english_select,
             "male": self.english_male,
             "female": self.english_female,
+            "error": self.english_error,
             'question_of' : self.english_question_of}
         else:
             return {'translate':translate,
@@ -153,6 +162,7 @@ class GeneralSetting(models.Model):
             "select": self.tagalog_select,
             "male": self.tagalog_male,
             "female": self.tagalog_female,
+            "error": self.tagalog_error,
             'question_of' : self.tagalog_question_of}
 
 class QuantitativeQuestion(models.Model):

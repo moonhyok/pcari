@@ -10,7 +10,7 @@ from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comm
 
 
 # admin.site.register(QuantitativeQuestion)
-admin.site.register(QualitativeQuestion)
+# admin.site.register(QualitativeQuestion)
 # admin.site.register(Rating)
 # admin.site.register(Comment)
 # admin.site.register(UserProgression)

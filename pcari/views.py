@@ -18,17 +18,17 @@ import random
 
 # !IMPORTANT! YOU MUST COMMENT OUT THE FOLLOWING GLOBAL VARIABLES
 # IF YOU MAKE CHANGES TO models.py
-QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
-QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
-QUAN_COUNT = QuantitativeQuestion.objects.all().count()
-QUAL_COUNT = QualitativeQuestion.objects.all().count()
+# QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
+# QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
+# QUAN_COUNT = QuantitativeQuestion.objects.all().count()
+# QUAL_COUNT = QualitativeQuestion.objects.all().count()
 
-Q_COUNT = QUAN_COUNT + QUAL_COUNT
+# Q_COUNT = QUAN_COUNT + QUAL_COUNT
 
-random.shuffle(QUAN_QUESTIONS)
-random.shuffle(QUAL_QUESTIONS)
+# random.shuffle(QUAN_QUESTIONS)
+# random.shuffle(QUAL_QUESTIONS)
 
-TEXT = GeneralSetting.objects.all()[0].get_text()
+# TEXT = GeneralSetting.objects.all()[0].get_text()
 
 
 def switch_language(request):
@@ -149,12 +149,8 @@ def review(request):
 		try:
 			int(request.POST['age'])
 			if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
-				if TEXT['translate'] == "Tagalog":
-					msg = "Please enter the following fields"
-				else:
-					msg = "Tagalog need fields"
 				context = {
-				'error':msg,
+				'error':TEXT['error'],
 				'about':TEXT['about'],
 				'rate_more':TEXT['rate_more'],
 				'suggest_own':TEXT['suggest_own'],
@@ -168,12 +164,8 @@ def review(request):
 				}
 				return render(request, 'personal_data.html', context)
 		except:    
-			if TEXT['translate'] == "Tagalog":
-				msg = "Please enter a valid age"
-			else:
-				msg = "Tagalog valid age"
 			context = {
-				'error':msg,
+				'error':TEXT['error'],
 				'about':TEXT['about'],
 				'rate_more':TEXT['rate_more'],
 				'suggest_own':TEXT['suggest_own'],
@@ -335,6 +327,7 @@ def get_comment(request):
 	'translate':TEXT['translate'],
 	'peer_evaluation_description':TEXT['peer_evaluation_description'], 
 	'skip':TEXT['skip_button'],
+	'scale_description':TEXT['scale_description'],
 	'cid':cid, 
 	'comment':c.comment
 	}
