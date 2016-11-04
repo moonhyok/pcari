@@ -128,6 +128,14 @@ def rate(request, qid):
 
 		question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
+		print q.question
+		print q.qid
+
+		if q.qid == 5 or q.qid == 8:
+			scale_description = ""
+		else:
+			scale_description = TEXT['scale_description']
+
 		context = {
 		'translate':TEXT['translate'], 
 		'question_description':TEXT['question_description'], 
@@ -135,7 +143,7 @@ def rate(request, qid):
 		'skip':TEXT['skip_button'],
 		'question_of':question_of,
 		'question': q.question if TEXT['translate'] == "Tagalog" else q.tagalog_question,
-		'scale_description':TEXT['scale_description'],
+		'scale_description':scale_description,
 		'qid': q.qid, 
 		'rating':True
 		}
