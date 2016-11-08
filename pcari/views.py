@@ -115,9 +115,6 @@ def rate(request, qid):
 	progression.num_rated += 1
 	progression.save()
 
-	# print progression.num_rated
-	# print "num rated \n"
-
 	if progression.num_rated < Q_COUNT:
 		if progression.num_rated < QUAN_COUNT:
 			q = QUAN_QUESTIONS[progression.num_rated]
@@ -128,8 +125,6 @@ def rate(request, qid):
 
 		question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
-		# print q.question
-		# print q.qid
 
 		if q.qid == 5 or q.qid == 8:
 			scale_description = ""
