@@ -128,8 +128,8 @@ def rate(request, qid):
 
 		question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
-		print q.question
-		print q.qid
+		# print q.question
+		# print q.qid
 
 		if q.qid == 5 or q.qid == 8:
 			scale_description = ""
@@ -364,7 +364,7 @@ def rate_comment(request, cid):
 	rating.save()
 
 	if progression.num_peer_rated >= 2:
-		print "rate_comment peer>2"
+		# print "rate_comment peer>2"
 		return bloom(request,done=True)
 
 	return bloom(request)
