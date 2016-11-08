@@ -255,7 +255,7 @@ def bloom(request, done = False):
 		data = []
 
 	# List of Data
-	already_seen = map(lambda x: x.id, CommentRating.objects.all().filter(user=user))
+	already_seen = map(lambda x: x.cid, CommentRating.objects.all().filter(user=user))
 	n = 1
 	for c in comments:
 		if n > 8:
