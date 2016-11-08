@@ -332,7 +332,7 @@ def get_comment(request):
 	'skip':TEXT['skip_button'],
 	'scale_description':TEXT['scale_description'],
 	'cid':cid, 
-	'comment':c.comment
+	'comment': c.comment if TEXT['translate'] == "Tagalog" else c.tagalog_comment
 	}
 	return render(request, 'rating.html', context)
 
