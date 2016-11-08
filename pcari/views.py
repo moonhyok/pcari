@@ -126,7 +126,7 @@ def rate(request, qid):
 		question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
 
-		if q.qid == 5 or q.qid == 8:
+		if eval(q.qid) == 5 or eval(q.qid) == 8:
 			scale_description = ""
 		else:
 			scale_description = TEXT['scale_description']
