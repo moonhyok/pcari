@@ -191,12 +191,14 @@ def review(request):
 	q = QuantitativeQuestion.objects.all()
 	r = Rating.objects.all().filter(user=user)
 	user_ratings = map(lambda x: (x.qid,x.score), r)
+	rating_list = map(lambda x: x.qid, r)
 	user_ratings.sort(key=lambda x: x[0])
 
+	# BUG
 	if TEXT['translate'] == "Tagalog":
-		tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]), q)
+		tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tag,x.qid,-2), q)
 	else:
-		tag = map(lambda x: (x.tagalog_tag,x.qid,user_ratings[x.qid-1][1]), q)
+		tag = map(lambda x: (x.tagalog_tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tagalog_tag,x.qid,-2), q)
 
 	context = {
 	'translate':TEXT['translate'],
