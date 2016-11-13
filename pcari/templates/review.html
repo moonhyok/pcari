@@ -105,7 +105,7 @@
 
     {% for tag,qid,score in tags %}
 
-    <div class="compare-box-{{qid}}" style="padding-bottom: 15px;max-width:620px; height: 60px;display: inline-block;">
+    <div class="compare-box-{{qid}}" style="padding-bottom: 15px;max-width:620px; max-height: 55px;display: inline-block;">
             <div class="compare-tag" style="float:left;">
               <!--<div style="font-size: 12px; font-style: italic;font-weight: bolder;" onclick="accounts.hideAll();$('.detail-box-{{k.id}}').show();">{{k.id}}. </div>-->
               <div style="font-size: 18px; font-weight: bolder; padding-top: 10%; padding-left:10px;" class="english">{{tag}}</div>
@@ -125,9 +125,9 @@
       var lang = "Tagalog";
     {% endif %}
 
-    var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    var margin = {top: 20, right: 20, bottom: 19, left: 40},
         width = 320 - margin.left - margin.right,
-        height = 30;
+        height = 20;
 
     if ({{qid}} % 2 == 1)
             $('.compare-box-{{qid}}').css("background-color","rgba(0,0,0,0.05)")

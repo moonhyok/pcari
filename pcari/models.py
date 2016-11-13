@@ -34,7 +34,7 @@ class GeneralSetting(models.Model):
     english_feedback_description = models.CharField(max_length=500, default="At the end you'll have a chance to give us more feedback")
     tagalog_feedback_description = models.CharField(max_length=500, default="Sa dulo, mabibigyan ka ng pagkakataon na magbigay ng iyong mungkahing ideya")
 
-    english_bloom_description = models.CharField(max_length=500, default="Each sphere below represents an idea proposed by another user")
+    english_bloom_description = models.CharField(max_length=500, default="Each sphere below represents an idea proposed by another user. Click on the sphere to rate an idea.")
     tagalog_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba")
 
     english_begin_button = "Begin"

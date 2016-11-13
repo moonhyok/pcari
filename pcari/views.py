@@ -110,18 +110,21 @@ def rate(request, qid):
 	# if rating.score == "Submit" or rating.score == "Ipasa":
 	#     rating.response = request.POST['comment']
 
+	r = Rating.objects.all().filter(user=user)
+	rating_list = map(lambda x: x.qid, r)
+
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.rating = True
-	progression.num_rated += 1
+	progression.num_rated = len(rating_list)
 	progression.save()
 
 	if progression.num_rated < Q_COUNT:
-		if progression.num_rated < QUAN_COUNT:
-			q = QUAN_QUESTIONS[progression.num_rated]
-			qualitative = False
-		else:
-			q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
-			qualitative = True
+		# if progression.num_rated < QUAN_COUNT:
+		q = QUAN_QUESTIONS[progression.num_rated]
+		qualitative = False
+		# else:
+		# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
+		# 	qualitative = True
 
 		question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
