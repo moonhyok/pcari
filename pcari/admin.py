@@ -5,8 +5,13 @@ from django.core import serializers
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 
+import csv
+from django.utils.encoding import smart_str
+import openpyxl
+from openpyxl.cell import get_column_letter
+
 # Register your models here.
-from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comment, UserProgression, GeneralSetting, FlaggedComment, UserData
+from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comment, UserProgression, GeneralSetting, FlaggedComment, UserData, CommentRating
 
 
 # admin.site.register(QuantitativeQuestion)
@@ -15,31 +20,76 @@ from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comm
 # admin.site.register(Comment)
 # admin.site.register(UserProgression)
 
+def dump_comment_ratings_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=malasakit_comment_rating_data.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"User"),
+        smart_str(u"User Age"),
+        smart_str(u"User Barangay"),
+        smart_str(u"User Gender"),
+        smart_str(u"Corresponding Comment ID"),
+        smart_str(u"Score"),
+        smart_str(u"Date Created"),
+    ])
+
+    comment_ratings = CommentRating.objects.all()
+    for comment in comment_ratings:
+        u = user_data.filter(user=comment.user)
+        writer.writerow([
+            smart_str(comment.user),
+            smart_str(u.age),
+            smart_str(u.barangay),
+            smart_str(u.gender),
+            smart_str(comment.cid),
+            smart_str(comment.score),
+            smart_str(comment.date),
+        ])
+    return response
+    
+dump_comment_ratings_csv.short_description = u"Dump comment ratings as CSV"
+
 def export_comment_csv(modeladmin, request, queryset):
-    import csv
-    from django.utils.encoding import smart_str
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=malasakit_comment_data.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
         smart_str(u"User"),
-        smart_str(u"Average_score"),
-        smart_str(u"Number_rated"),
+        smart_str(u"User Age"),
+        smart_str(u"User Barangay"),
+        smart_str(u"User Gender"),
+        smart_str(u"Comment ID"),
+        smart_str(u"Comment"),
+        smart_str(u"Tagalog Comment"),
+        smart_str(u"Average Rcore"),
+        smart_str(u"Number Rated"),
+        smart_str(u"Date Created"),
+        smart_str(u"Original Language"),
     ])
-    for obj in queryset:
+    comments = Comment.objects.all()
+    for comment in comments:
+        u = user_data.filter(user=comment.user)
         writer.writerow([
-            smart_str(obj.user),
-            smart_str(obj.average_score),
-            smart_str(obj.number_rated),
+            smart_str(comment.user),
+            smart_str(u.age),
+            smart_str(u.barangay),
+            smart_str(u.gender),
+            smart_str(comment.id),
+            smart_str(comment.comment),
+            smart_str(comment.tagalog_comment),
+            smart_str(comment.average_score),
+            smart_str(comment.number_rated),
+            smart_str(comment.date),
+            smart_str(comment.original_language),
         ])
     return response
 
 export_comment_csv.short_description = u"Export as CSV"
 
 def export_comment_xlsx(modeladmin, request, queryset):
-    import openpyxl
-    from openpyxl.cell import get_column_letter
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=malasakit_comment_data.xlsx'
     wb = openpyxl.Workbook()
@@ -76,22 +126,55 @@ def export_comment_xlsx(modeladmin, request, queryset):
     wb.save(response)
     return response
 
+def dump_question_ratings_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=malasakit_question_rating_data.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"User"),
+        smart_str(u"User Age"),
+        smart_str(u"User Barangay"),
+        smart_str(u"User Gender"),
+        smart_str(u"Question ID"),
+        smart_str(u"Score"),
+        smart_str(u"Date Created"),
+    ])
+    ratings = Rating.objects.all()
+    user_data = UserData.objects.all()
+    for obj in ratings:
+        u = user_data.filter(user=obj.user)
+        writer.writerow([
+            smart_str(obj.user),
+            smart_str(u.age),
+            smart_str(u.barangay),
+            smart_str(u.gender),
+            smart_str(obj.qid),
+            smart_str(obj.score),
+            smart_str(obj.date),
+        ])
+    return response
+
+dump_question_ratings_csv.short_description = u"Dump question ratings as CSV"
+
 def export_question_csv(modeladmin, request, queryset):
-    import csv
-    from django.utils.encoding import smart_str
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=malasakit_question_data.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
-    user = User.objects.all()
     writer.writerow([
+        smart_str(u"Question ID"),
         smart_str(u"Question"),
-        smart_str(u"Average_score"),
-        smart_str(u"Number_rated"),
+        smart_str(u"Tagalog Question"),
+        smart_str(u"Average Score"),
+        smart_str(u"Number Rated"),
     ])
-    for obj in queryset:
+    questions = QuantitativeQuestion.objects.all()
+    for obj in questions:
         writer.writerow([
+            smart_str(obj.qid),
             smart_str(obj.question),
+            smart_str(obj.tagalog_question),
             smart_str(obj.average_score),
             smart_str(obj.number_rated),
         ])
@@ -100,8 +183,6 @@ def export_question_csv(modeladmin, request, queryset):
 export_question_csv.short_description = u"Export as CSV"
 
 def export_question_xlsx(modeladmin, request, queryset):
-    import openpyxl
-    from openpyxl.cell import get_column_letter
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=malasakit_question_data.xlsx'
     wb = openpyxl.Workbook()
@@ -169,14 +250,14 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['user', 'comment', 'tagalog_comment', 'average_score', 'number_rated', 'tag', 'original_language']
     list_editable = ['comment','tagalog_comment']
     ordering = ['user']
-    actions = [flag_comment,export_comment_csv, export_comment_xlsx]
+    actions = [flag_comment,export_comment_csv, dump_comment_ratings_csv]#, export_comment_xlsx]
 
 admin.site.register(Comment, CommentAdmin)
 
 class FlaggedCommentAdmin(admin.ModelAdmin):
     list_display = ['user', 'comment', 'tagalog_comment', 'average_score', 'number_rated', 'tag']
     ordering = ['user']
-    actions = [unflag_comment,export_comment_csv, export_comment_xlsx]
+    actions = [unflag_comment,export_comment_csv]#, export_comment_xlsx]
 
 admin.site.register(FlaggedComment, FlaggedCommentAdmin)
 
@@ -184,7 +265,7 @@ admin.site.register(FlaggedComment, FlaggedCommentAdmin)
 class QuantitativeQuestionAdmin(admin.ModelAdmin):
     list_display = ['question', 'tagalog_question', 'average_score']
     ordering = ['qid']
-    actions = [export_question_csv, export_question_xlsx]
+    actions = [export_question_csv, dump_question_ratings_csv]#,export_question_xlsx]
 
 admin.site.register(QuantitativeQuestion, QuantitativeQuestionAdmin)
 
