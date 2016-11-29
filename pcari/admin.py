@@ -63,7 +63,7 @@ def export_comment_csv(modeladmin, request, queryset):
         smart_str(u"User Gender"),
         smart_str(u"Comment ID"),
         smart_str(u"Comment"),
-        smart_str(u"Tagalog Comment"),
+        smart_str(u"Filipino Comment"),
         smart_str(u"Average Rcore"),
         smart_str(u"Number Rated"),
         smart_str(u"Date Created"),
@@ -79,7 +79,7 @@ def export_comment_csv(modeladmin, request, queryset):
             smart_str(u.gender),
             smart_str(comment.id),
             smart_str(comment.comment),
-            smart_str(comment.tagalog_comment),
+            smart_str(comment.filipino_comment),
             smart_str(comment.average_score),
             smart_str(comment.number_rated),
             smart_str(comment.date),
@@ -165,7 +165,7 @@ def export_question_csv(modeladmin, request, queryset):
     writer.writerow([
         smart_str(u"Question ID"),
         smart_str(u"Question"),
-        smart_str(u"Tagalog Question"),
+        smart_str(u"Filipino Question"),
         smart_str(u"Average Score"),
         smart_str(u"Number Rated"),
     ])
@@ -174,7 +174,7 @@ def export_question_csv(modeladmin, request, queryset):
         writer.writerow([
             smart_str(obj.qid),
             smart_str(obj.question),
-            smart_str(obj.tagalog_question),
+            smart_str(obj.filipino_question),
             smart_str(obj.average_score),
             smart_str(obj.number_rated),
         ])
@@ -231,7 +231,7 @@ admin.site.register(GeneralSetting, GeneralSettingAdmin)
 
 def flag_comment(modeladmin, request, queryset):
 	for obj in queryset:
-		f = FlaggedComment(user=obj.user,comment=obj.comment,tagalog_comment=obj.tagalog_comment,date=obj.date,average_score=obj.average_score,number_rated=obj.number_rated,tag=obj.tag)
+		f = FlaggedComment(user=obj.user,comment=obj.comment,filipino_comment=obj.filipino_comment,date=obj.date,average_score=obj.average_score,number_rated=obj.number_rated,tag=obj.tag)
 		f.save()
 		obj.delete()
 
@@ -239,7 +239,7 @@ flag_comment.short_description = u"Flag Comment"
 
 def unflag_comment(modeladmin, request, queryset):
 	for obj in queryset:
-		c = Comment(user=obj.user,comment=obj.comment,tagalog_comment=obj.tagalog_comment,date=obj.date,average_score=obj.average_score,number_rated=obj.number_rated,tag=obj.tag)
+		c = Comment(user=obj.user,comment=obj.comment,filipino_comment=obj.filipino_comment,date=obj.date,average_score=obj.average_score,number_rated=obj.number_rated,tag=obj.tag)
 		c.save()
 		obj.delete()
 
@@ -247,15 +247,15 @@ unflag_comment.short_description = u"Unflag Comment"
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'comment', 'tagalog_comment', 'average_score', 'number_rated', 'tag', 'original_language']
-    list_editable = ['comment','tagalog_comment']
+    list_display = ['user', 'comment', 'filipino_comment', 'average_score', 'number_rated', 'tag', 'original_language']
+    list_editable = ['comment','filipino_comment']
     ordering = ['user']
     actions = [flag_comment,export_comment_csv, dump_comment_ratings_csv]#, export_comment_xlsx]
 
 admin.site.register(Comment, CommentAdmin)
 
 class FlaggedCommentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'comment', 'tagalog_comment', 'average_score', 'number_rated', 'tag']
+    list_display = ['user', 'comment', 'filipino_comment', 'average_score', 'number_rated', 'tag']
     ordering = ['user']
     actions = [unflag_comment,export_comment_csv]#, export_comment_xlsx]
 
@@ -263,7 +263,7 @@ admin.site.register(FlaggedComment, FlaggedCommentAdmin)
 
 
 class QuantitativeQuestionAdmin(admin.ModelAdmin):
-    list_display = ['question', 'tagalog_question', 'average_score']
+    list_display = ['question', 'filipino_question', 'average_score']
     ordering = ['qid']
     actions = [export_question_csv, dump_question_ratings_csv]#,export_question_xlsx]
 

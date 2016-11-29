@@ -9,7 +9,7 @@ for c in Comment.objects.all():
 		c.delete()
 
 
-tagalog = ["Pagsasagawa ng drill upang magkaroon ng kaalaman ang mga tao kung ano ang gagawin nila sa oras ng sakuna",
+filipino = ["Pagsasagawa ng drill upang magkaroon ng kaalaman ang mga tao kung ano ang gagawin nila sa oras ng sakuna",
 "Group text message, Social Media at Local News Announcement (specific barangay per city)",
 "Siguraduhin na malinis ang mga kanal, magkaroon ng mga water pumps",
 "Nakabubuti na mamigay ang barangay ng mga pamphlets na naglalaman ng mga numero ng mga ahensyang makatutulong sa mga pwedeng dumating na sakuna",
@@ -34,6 +34,6 @@ english = ["Hold drill exercises so that people would know what to do in times o
 "The barangay sounds the siren and texts the area leaders, and the barangay wardens road around.",
 "Continuous repair of the river to make it deeper; help mend broken houses; provide relief goods in an orderly fashion."]
 
-for i in range(len(tagalog)):
-	c = Comment(user=u, comment=english[i], tagalog_comment=tagalog[i], original_language="English")
+for i in range(len(filipino)):
+	c = Comment(user=u, comment=english[i], filipino_comment=filipino[i], original_language="English")
 	c.save()

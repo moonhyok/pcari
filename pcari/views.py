@@ -82,7 +82,7 @@ def create_user(request):
 	'feedback_description':TEXT['feedback_description'], 
 	'skip':TEXT['skip_button'],
 	'question_of':question_of,
-	'question': q.question if TEXT['translate'] == "Tagalog" else q.tagalog_question,
+	'question': q.question if TEXT['translate'] == "Filipino" else q.filipino_question,
 	'scale_description':TEXT['scale_description'],
 	'qid': q.qid, 
 	'rating':True
@@ -140,7 +140,7 @@ def rate(request, qid):
 		'feedback_description':TEXT['feedback_description'], 
 		'skip':TEXT['skip_button'],
 		'question_of':question_of,
-		'question': q.question if TEXT['translate'] == "Tagalog" else q.tagalog_question,
+		'question': q.question if TEXT['translate'] == "Filipino" else q.filipino_question,
 		'scale_description':scale_description,
 		'qid': q.qid, 
 		'rating':True
@@ -198,10 +198,10 @@ def review(request):
 	user_ratings.sort(key=lambda x: x[0])
 
 	# BUG
-	if TEXT['translate'] == "Tagalog":
+	if TEXT['translate'] == "Filipino":
 		tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tag,x.qid,-2), q)
 	else:
-		tag = map(lambda x: (x.tagalog_tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tagalog_tag,x.qid,-2), q)
+		tag = map(lambda x: (x.filipino_tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.filipino_tag,x.qid,-2), q)
 
 	context = {
 	'translate':TEXT['translate'],
@@ -308,10 +308,10 @@ def logout(request):
 	try:
 		c = Comment(user=user)
 		c.comment = request.POST['comment']
-		if TEXT['translate'] == "Tagalog":
+		if TEXT['translate'] == "Filipino":
 			c.original_language = "English"
 		else:
-			c.original_language = "Tagalog"
+			c.original_language = "Filipino"
 		c.save()
 		# logout(request)
 	except:
@@ -337,7 +337,7 @@ def get_comment(request):
 	'skip':TEXT['skip_button'],
 	'scale_description':TEXT['scale_description'],
 	'cid':cid, 
-	'comment': c.comment if TEXT['translate'] == "Tagalog" else c.tagalog_comment
+	'comment': c.comment if TEXT['translate'] == "Filipino" else c.filipino_comment
 	}
 	return render(request, 'rating.html', context)
 

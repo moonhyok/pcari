@@ -14,7 +14,7 @@ english_question=[
 "How many weeks has it been since you participated in a disaster drill?"
 ]
 
-tagalog_question=[
+filipino_question=[
 "Malawak at mabigat ang epekto ng bagyo o pagbabaha sa akin",
 "Nararamdaman kong handa akong harapin ang pagdating ng malakas na bagyo",
 "Epektibo ang ginagamit na “Early Warning System” ng barangay tuwing may bagyo",
@@ -26,7 +26,7 @@ tagalog_question=[
 ]
 
 for i in range(len(english_question)):
-	new_q = QuantitativeQuestion(question=english_question[i],tagalog_question=tagalog_question[i])
+	new_q = QuantitativeQuestion(question=english_question[i],filipino_question=filipino_question[i])
 	new_q.save()
 
 

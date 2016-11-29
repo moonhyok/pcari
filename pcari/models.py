@@ -11,31 +11,31 @@ from django.contrib.auth.models import User
 class GeneralSetting(models.Model):
     LANGUAGE_CHOICES = (
     ('English', 'English'),
-    ('Tagalog', 'Tagalog'),
+    ('Filipino', 'Filipino'),
     )
 
     default_language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, default="English")
 
     english_landing_description = models.CharField(max_length=500, default="Take a minute to see how prepared you are and join the %d others who have visited so far in an online discussion about preparedness.")
-    tagalog_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
+    filipino_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
 
     english_question_description = models.CharField(max_length=500, default="Please select how strongly you agree with the following statement")
-    tagalog_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
+    filipino_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
 
     english_graph_description = models.CharField(max_length=500, default="Here's how you compare with others")
-    tagalog_graph_description = models.CharField(max_length=500, default="no translation provided")
+    filipino_graph_description = models.CharField(max_length=500, default="no translation provided")
 
     english_peer_evaluation_description = models.CharField(max_length=500, default="How helpful is this suggestion? ")
-    tagalog_peer_evaluation_description = models.CharField(max_length=500, default="Gaano ka halaga ang mungkahing ito?")
+    filipino_peer_evaluation_description = models.CharField(max_length=500, default="Gaano ka halaga ang mungkahing ito?")
 
     english_comment_description = models.CharField(max_length=500, default="How could your Barangay help you better prepare for a disaster?")
-    tagalog_comment_description = models.CharField(max_length=500, default="Sa papaanong pamamaraan makakatulong ang inyong barangay upang higit na maging handa ka para sa isang kalamidad")
+    filipino_comment_description = models.CharField(max_length=500, default="Sa papaanong pamamaraan makakatulong ang inyong barangay upang higit na maging handa ka para sa isang kalamidad")
 
     english_feedback_description = models.CharField(max_length=500, default="At the end you'll have a chance to give us more feedback")
-    tagalog_feedback_description = models.CharField(max_length=500, default="Sa dulo, mabibigyan ka ng pagkakataon na magbigay ng iyong mungkahing ideya")
+    filipino_feedback_description = models.CharField(max_length=500, default="Sa dulo, mabibigyan ka ng pagkakataon na magbigay ng iyong mungkahing ideya")
 
     english_bloom_description = models.CharField(max_length=500, default="Each sphere below represents an idea proposed by another user. Click on the sphere to rate an idea.")
-    tagalog_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba")
+    filipino_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba")
 
     english_begin_button = "Begin"
     english_skip_button = "Skip"
@@ -43,66 +43,66 @@ class GeneralSetting(models.Model):
     english_post_button = "Post"
     english_submit_button = "Submit"
 
-    tagalog_begin_button = models.CharField(max_length=20, default="Simulan")
-    tagalog_skip_button = models.CharField(max_length=20, default="Laktawan")
-    tagalog_next_button = models.CharField(max_length=20, default="Susunod")
-    tagalog_post_button = models.CharField(max_length=20, default="Ipasa")
-    tagalog_submit_button = models.CharField(max_length=20, default="Isumite")
+    filipino_begin_button = models.CharField(max_length=20, default="Simulan")
+    filipino_skip_button = models.CharField(max_length=20, default="Laktawan")
+    filipino_next_button = models.CharField(max_length=20, default="Susunod")
+    filipino_post_button = models.CharField(max_length=20, default="Ipasa")
+    filipino_submit_button = models.CharField(max_length=20, default="Isumite")
 
     english_question_of = "Question %d of %d"
-    tagalog_question_of = "Ika-%d ng %d katanungan"
+    filipino_question_of = "Ika-%d ng %d katanungan"
 
     english_about_pcari = models.CharField(max_length=30, default="About PCARI")
-    tagalog_about_pcari = models.CharField(max_length=30, default="Tungkol sa PCARI")
+    filipino_about_pcari = models.CharField(max_length=30, default="Tungkol sa PCARI")
 
     english_rate_more_ideas = models.CharField(max_length=30, default="Rate More Ideas")
-    tagalog_rate_more_ideas = models.CharField(max_length=30, default="Bigyan ng grado ang iba pang ideya")
+    filipino_rate_more_ideas = models.CharField(max_length=30, default="Bigyan ng grado ang iba pang ideya")
 
     english_exit = models.CharField(max_length=30, default="Exit")
-    tagalog_exit = models.CharField(max_length=30, default="Lumabas")
+    filipino_exit = models.CharField(max_length=30, default="Lumabas")
 
     english_more_info = models.CharField(max_length=30, default="More Information")
-    tagalog_more_info = models.CharField(max_length=30, default="Iba pang impormasyon")
+    filipino_more_info = models.CharField(max_length=30, default="Iba pang impormasyon")
 
     english_suggest_own = models.CharField(max_length=30, default="Suggest Your Own Idea")
-    tagalog_suggest_own = models.CharField(max_length=30, default="Magmungkahi ng iyong sariling ideya")
+    filipino_suggest_own = models.CharField(max_length=30, default="Magmungkahi ng iyong sariling ideya")
 
     english_share_description = models.CharField(max_length=300, default="Please share Malasakit with your friends and family")
-    tagalog_share_description = models.CharField(max_length=300, default="Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya")
+    filipino_share_description = models.CharField(max_length=300, default="Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya")
 
     english_learn_more = models.CharField(max_length=300, default="Learn more about how to be prepared for a disaster")
-    tagalog_learn_more = models.CharField(max_length=300, default="Alamin ang iba pang impormasyon kung paano magiging handa sa isang sakuna")
+    filipino_learn_more = models.CharField(max_length=300, default="Alamin ang iba pang impormasyon kung paano magiging handa sa isang sakuna")
 
     english_short_description = models.CharField(max_length=300, default="A project by the CITRIS Connected Communities Initiative at UC Berkeley and the Philippine Commission on Higher Education through the Philippine-California Advanced Research Institutes Project.")
-    tagalog_short_description = models.CharField(max_length=300, default="Isang proyekto ng CITRIS Connected Communities Initiative ng UC Berkeley, at ng Commission on Higher Education ng Pilipinas sa pamamagitan ng Philippine-California Advanced Research Institutes Project")
+    filipino_short_description = models.CharField(max_length=300, default="Isang proyekto ng CITRIS Connected Communities Initiative ng UC Berkeley, at ng Commission on Higher Education ng Pilipinas sa pamamagitan ng Philippine-California Advanced Research Institutes Project")
 
     english_scale_description = models.CharField(max_length=300, default="0 (strongly disagree) to 9 (strongly agree)")
-    tagalog_scale_description = models.CharField(max_length=300, default="Mula 0 (hinding-hindi ako sumasang-ayon) hanggang 9 (lubos akong sumasang-ayon)")
+    filipino_scale_description = models.CharField(max_length=300, default="Mula 0 (hinding-hindi ako sumasang-ayon) hanggang 9 (lubos akong sumasang-ayon)")
 
     english_age = models.CharField(max_length=30, default="Age")
-    tagalog_age = models.CharField(max_length=30, default="Susunod")
+    filipino_age = models.CharField(max_length=30, default="Susunod")
 
     english_gender = models.CharField(max_length=30, default="Gender")
-    tagalog_gender = models.CharField(max_length=30, default="Edad")
+    filipino_gender = models.CharField(max_length=30, default="Edad")
 
     english_select = models.CharField(max_length=30, default="Select")
-    tagalog_select = models.CharField(max_length=30, default="Pili ang")
+    filipino_select = models.CharField(max_length=30, default="Pili ang")
 
     english_male = models.CharField(max_length=30, default="Male")
-    tagalog_male = models.CharField(max_length=30, default="Lalaki")
+    filipino_male = models.CharField(max_length=30, default="Lalaki")
 
     english_female = models.CharField(max_length=30, default="Female")
-    tagalog_female = models.CharField(max_length=30, default="Babae")
+    filipino_female = models.CharField(max_length=30, default="Babae")
 
     english_error = models.CharField(max_length=300, default="Please enter the following fields")
-    tagalog_error = models.CharField(max_length=300, default="(TAGALOG) Please enter the following fields")
+    filipino_error = models.CharField(max_length=300, default="(TAGALOG) Please enter the following fields")
 
 
     def get_text(self, language = None):
         if language == None:
-            language = self.default_language
+            language = "Filipino"
 
-        translate = {"English":"Tagalog","Tagalog":"English"}[language]
+        translate = {"English":"Filipino","Filipino":"English"}[language]
 
         if language == "English":
             return {'translate' : translate,
@@ -136,34 +136,34 @@ class GeneralSetting(models.Model):
             'question_of' : self.english_question_of}
         else:
             return {'translate':translate,
-            'landing_description' : self.tagalog_landing_description,
-            'question_description' : self.tagalog_question_description,
-            'graph_description' : self.tagalog_graph_description,
-            'peer_evaluation_description' : self.tagalog_peer_evaluation_description,
-            'comment_description' : self.tagalog_comment_description,
-            'feedback_description' : self.tagalog_feedback_description,
-            'bloom_description' : self.tagalog_bloom_description,
-            'begin_button' : self.tagalog_begin_button,
-            'skip_button' : self.tagalog_skip_button,
-            'next_button' : self.tagalog_next_button,
-            'post_button' : self.tagalog_post_button,
-            'submit_button' : self.tagalog_submit_button,
-            'about': self.tagalog_about_pcari,
-            'more_info': self.tagalog_more_info,
-            'short_description': self.tagalog_short_description,
-            'scale_description': self.tagalog_scale_description,
-            'suggest_own': self.tagalog_suggest_own,
-            'exit': self.tagalog_exit,
-            'rate_more': self.tagalog_rate_more_ideas,
-            'share_description': self.tagalog_share_description,
-            'learn_more': self.tagalog_learn_more,
-            "age": self.tagalog_age,
-            "gender": self.tagalog_gender,
-            "select": self.tagalog_select,
-            "male": self.tagalog_male,
-            "female": self.tagalog_female,
-            "error": self.tagalog_error,
-            'question_of' : self.tagalog_question_of}
+            'landing_description' : self.filipino_landing_description,
+            'question_description' : self.filipino_question_description,
+            'graph_description' : self.filipino_graph_description,
+            'peer_evaluation_description' : self.filipino_peer_evaluation_description,
+            'comment_description' : self.filipino_comment_description,
+            'feedback_description' : self.filipino_feedback_description,
+            'bloom_description' : self.filipino_bloom_description,
+            'begin_button' : self.filipino_begin_button,
+            'skip_button' : self.filipino_skip_button,
+            'next_button' : self.filipino_next_button,
+            'post_button' : self.filipino_post_button,
+            'submit_button' : self.filipino_submit_button,
+            'about': self.filipino_about_pcari,
+            'more_info': self.filipino_more_info,
+            'short_description': self.filipino_short_description,
+            'scale_description': self.filipino_scale_description,
+            'suggest_own': self.filipino_suggest_own,
+            'exit': self.filipino_exit,
+            'rate_more': self.filipino_rate_more_ideas,
+            'share_description': self.filipino_share_description,
+            'learn_more': self.filipino_learn_more,
+            "age": self.filipino_age,
+            "gender": self.filipino_gender,
+            "select": self.filipino_select,
+            "male": self.filipino_male,
+            "female": self.filipino_female,
+            "error": self.filipino_error,
+            'question_of' : self.filipino_question_of}
 
 class QuantitativeQuestion(models.Model):
     qid = models.AutoField(primary_key=True)
@@ -171,13 +171,13 @@ class QuantitativeQuestion(models.Model):
     average_score = models.FloatField(default = 0)
     number_rated = models.IntegerField(default = 0)
     tag = models.CharField(max_length=50, default="")
-    tagalog_tag = models.CharField(max_length=50, default="")
-    tagalog_question = models.CharField(max_length=500, default="walang tagalog pagsasalin")
+    filipino_tag = models.CharField(max_length=50, default="")
+    filipino_question = models.CharField(max_length=500, default="walang filipino pagsasalin")
 
 class QualitativeQuestion(models.Model):
     qid = models.AutoField(primary_key=True)
     question = models.CharField(max_length=500, default="")
-    tagalog_question = models.CharField(max_length=500, default="walang tagalog pagsasalin")
+    filipino_question = models.CharField(max_length=500, default="walang filipino pagsasalin")
 
 class UserData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
@@ -206,12 +206,12 @@ class Rating(models.Model):
 class Comment(models.Model):
     LANGUAGE_CHOICES = (
     ('English', 'English'),
-    ('Tagalog', 'Tagalog'),
+    ('Filipino', 'Filipino'),
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
     comment = models.CharField(max_length = 1000, default = "", null = True, blank=True)
-    tagalog_comment = models.CharField(max_length = 1000, default = "", null = True, blank=True)
+    filipino_comment = models.CharField(max_length = 1000, default = "", null = True, blank=True)
     date = models.DateTimeField(auto_now_add = True)
     average_score = models.FloatField(default = 0)
     number_rated = models.IntegerField(default = 0)
@@ -252,7 +252,7 @@ class Progression(models.Model):
 class FlaggedComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)
     comment = models.CharField(max_length = 1000, default = "", null = True)
-    tagalog_comment = models.CharField(max_length = 1000, default = "", null = True)
+    filipino_comment = models.CharField(max_length = 1000, default = "", null = True)
     date = models.DateTimeField(auto_now_add = False)
     average_score = models.FloatField(default = 0)
     number_rated = models.IntegerField(default = 0)

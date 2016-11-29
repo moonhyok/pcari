@@ -52,7 +52,7 @@ text {
 {% if language %}
   var lang = "English";
 {% else %}
-  var lang = "Tagalog";
+  var lang = "Filipino";
 {% endif %}
 
 var circleData = {{ comment_data|safe }};
@@ -133,7 +133,7 @@ circle.enter().append("svg:image")
     .attr("xlink:href", function(d) {
       if (d.cid==0){
         if (lang == "English"){
-          return "{% static 'img/cafe/cafe_ball_tagalog_you.png' %}"
+          return "{% static 'img/cafe/cafe_ball_filipino_you.png' %}"
         }
         return "{% static 'img/cafe/cafe_ball_you.png' %}"
       } else {
