@@ -16,14 +16,14 @@ class GeneralSetting(models.Model):
 
     default_language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, default="English")
 
-    english_landing_description = models.CharField(max_length=500, default="Take a minute to see how prepared you are and join the %d others who have visited so far in an online discussion about preparedness.")
+    english_landing_description = models.CharField(max_length=500, default="How prepared are you in times of disaster? %d barangay citizens have responded. Join them! It only takes a minute.")
     filipino_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
 
     english_question_description = models.CharField(max_length=500, default="Please select how strongly you agree with the following statement")
     filipino_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
 
-    english_graph_description = models.CharField(max_length=500, default="Here's how you compare with others")
-    filipino_graph_description = models.CharField(max_length=500, default="no translation provided")
+    english_graph_description = models.CharField(max_length=500, default="The plots below show the average trend of the ratings.")
+    filipino_graph_description = models.CharField(max_length=500, default="Sa papaanong pamamaraan makakatulong ang inyong barangay upang higit na maging handa ka para sa isang kalamidad")
 
     english_peer_evaluation_description = models.CharField(max_length=500, default="How helpful is this suggestion? ")
     filipino_peer_evaluation_description = models.CharField(max_length=500, default="Gaano ka halaga ang mungkahing ito?")
@@ -55,8 +55,8 @@ class GeneralSetting(models.Model):
     english_about_pcari = models.CharField(max_length=30, default="About PCARI")
     filipino_about_pcari = models.CharField(max_length=30, default="Tungkol sa PCARI")
 
-    english_rate_more_ideas = models.CharField(max_length=30, default="Rate More Ideas")
-    filipino_rate_more_ideas = models.CharField(max_length=30, default="Bigyan ng grado ang iba pang ideya")
+    english_rate_more_ideas = models.CharField(max_length=50, default="Rate More Ideas")
+    filipino_rate_more_ideas = models.CharField(max_length=50, default="Bigyan ng grado ang iba pang ideya")
 
     english_exit = models.CharField(max_length=30, default="Exit")
     filipino_exit = models.CharField(max_length=30, default="Lumabas")
@@ -64,11 +64,11 @@ class GeneralSetting(models.Model):
     english_more_info = models.CharField(max_length=30, default="More Information")
     filipino_more_info = models.CharField(max_length=30, default="Iba pang impormasyon")
 
-    english_suggest_own = models.CharField(max_length=30, default="Suggest Your Own Idea")
-    filipino_suggest_own = models.CharField(max_length=30, default="Magmungkahi ng iyong sariling ideya")
+    english_suggest_own = models.CharField(max_length=50, default="Suggest Your Own Idea")
+    filipino_suggest_own = models.CharField(max_length=50, default="Magmungkahi ng iyong sariling ideya")
 
-    english_share_description = models.CharField(max_length=300, default="Please share Malasakit with your friends and family")
-    filipino_share_description = models.CharField(max_length=300, default="Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya")
+    english_share_description = models.CharField(max_length=300, default="Thank you for participating. Please share Malasakit with your friends and family")
+    filipino_share_description = models.CharField(max_length=300, default="Maraming salamat. Paki bahagi ang Malasakit sa inyong mga kaibigan at pamilya")
 
     english_learn_more = models.CharField(max_length=300, default="Learn more about how to be prepared for a disaster")
     filipino_learn_more = models.CharField(max_length=300, default="Alamin ang iba pang impormasyon kung paano magiging handa sa isang sakuna")
@@ -80,13 +80,13 @@ class GeneralSetting(models.Model):
     filipino_scale_description = models.CharField(max_length=300, default="Mula 0 (hinding-hindi ako sumasang-ayon) hanggang 9 (lubos akong sumasang-ayon)")
 
     english_age = models.CharField(max_length=30, default="Age")
-    filipino_age = models.CharField(max_length=30, default="Susunod")
+    filipino_age = models.CharField(max_length=30, default="Edad")
 
     english_gender = models.CharField(max_length=30, default="Gender")
-    filipino_gender = models.CharField(max_length=30, default="Edad")
+    filipino_gender = models.CharField(max_length=30, default="Kasarian")
 
     english_select = models.CharField(max_length=30, default="Select")
-    filipino_select = models.CharField(max_length=30, default="Pili ang")
+    filipino_select = models.CharField(max_length=30, default="Pili ng kasarian")
 
     english_male = models.CharField(max_length=30, default="Male")
     filipino_male = models.CharField(max_length=30, default="Lalaki")
@@ -95,7 +95,7 @@ class GeneralSetting(models.Model):
     filipino_female = models.CharField(max_length=30, default="Babae")
 
     english_error = models.CharField(max_length=300, default="Please enter the following fields")
-    filipino_error = models.CharField(max_length=300, default="(TAGALOG) Please enter the following fields")
+    filipino_error = models.CharField(max_length=300, default="Paki sagutan ang mga sumusunod para maikumpara ang iyong sagot sa iba")
 
 
     def get_text(self, language = None):
