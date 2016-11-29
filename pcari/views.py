@@ -18,17 +18,17 @@ import random
 
 # !IMPORTANT! YOU MUST COMMENT OUT THE FOLLOWING GLOBAL VARIABLES
 # IF YOU MAKE CHANGES TO models.py
-QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
-QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
-QUAN_COUNT = QuantitativeQuestion.objects.all().count()
-QUAL_COUNT = QualitativeQuestion.objects.all().count()
+# QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
+# QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
+# QUAN_COUNT = QuantitativeQuestion.objects.all().count()
+# QUAL_COUNT = QualitativeQuestion.objects.all().count()
 
-Q_COUNT = QUAN_COUNT + QUAL_COUNT
+# Q_COUNT = QUAN_COUNT + QUAL_COUNT
 
-random.shuffle(QUAN_QUESTIONS)
-random.shuffle(QUAL_QUESTIONS)
+# random.shuffle(QUAN_QUESTIONS)
+# random.shuffle(QUAL_QUESTIONS)
 
-TEXT = GeneralSetting.objects.all()[0].get_text()
+# TEXT = GeneralSetting.objects.all()[0].get_text()
 
 
 def switch_language(request):
