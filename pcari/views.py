@@ -151,42 +151,44 @@ def rate(request, qid):
 
 def review(request):
 	user = request.user
-	if not UserData.objects.all().filter(user=user).exists():
-		try:
-			int(request.POST['age'])
-			if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
-				context = {
-				'error':TEXT['error'],
-				'about':TEXT['about'],
-				'rate_more':TEXT['rate_more'],
-				'suggest_own':TEXT['suggest_own'],
-				'next':TEXT['next_button'],
-				'age':TEXT['age'],
-				'gender':TEXT['gender'],
-				'male':TEXT['male'],
-				'female':TEXT['female'],
-				'select':TEXT['select'],
-				'translate':TEXT['translate']
-				}
-				return render(request, 'personal_data.html', context)
-		except:    
-			context = {
-				'error':TEXT['error'],
-				'about':TEXT['about'],
-				'rate_more':TEXT['rate_more'],
-				'suggest_own':TEXT['suggest_own'],
-				'next':TEXT['next_button'],
-				'age':TEXT['age'],
-				'gender':TEXT['gender'],
-				'male':TEXT['male'],
-				'female':TEXT['female'],
-				'select':TEXT['select'],
-				'translate':TEXT['translate']
-				}
-			return render(request, 'personal_data.html', context)    
-
-		userdata = UserData(user=user, age=request.POST['age'], barangay=request.POST['barangay'], gender=request.POST['gender'])
-		userdata.save()
+	# if not UserData.objects.all().filter(user=user).exists():
+	# 	try:
+	# 		int(request.POST['age'])
+	# 		if request.POST['barangay'] == "" or request.POST['age'] == "" or request.POST['gender'] == "":
+	# 			context = {
+	# 			'error':TEXT['error'],
+	# 			'about':TEXT['about'],
+	# 			'rate_more':TEXT['rate_more'],
+	# 			'suggest_own':TEXT['suggest_own'],
+	# 			'next':TEXT['next_button'],
+	# 			'age':TEXT['age'],
+	# 			'gender':TEXT['gender'],
+	# 			'male':TEXT['male'],
+	# 			'female':TEXT['female'],
+	# 			'select':TEXT['select'],
+	# 			'translate':TEXT['translate']
+	# 			}
+	# 			return render(request, 'personal_data.html', context)
+	# 	except:    
+	# 		context = {
+	# 			'error':TEXT['error'],
+	# 			'about':TEXT['about'],
+	# 			'rate_more':TEXT['rate_more'],
+	# 			'suggest_own':TEXT['suggest_own'],
+	# 			'next':TEXT['next_button'],
+	# 			'age':TEXT['age'],
+	# 			'gender':TEXT['gender'],
+	# 			'male':TEXT['male'],
+	# 			'female':TEXT['female'],
+	# 			'select':TEXT['select'],
+	# 			'translate':TEXT['translate']
+	# 			}
+	# 		return render(request, 'personal_data.html', context)    
+	age = request.POST['age']
+	if age == "":
+		age = -1
+	userdata = UserData(user=user, age=age, barangay=request.POST['barangay'], gender=request.POST['gender'])
+	userdata.save()
 
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.review = True

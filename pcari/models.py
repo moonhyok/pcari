@@ -181,8 +181,8 @@ class QualitativeQuestion(models.Model):
 
 class UserData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
-    age = models.IntegerField(default=0)
-    barangay = models.CharField(max_length=500, default="")
+    age = models.IntegerField(default=0, null = True, blank=True)
+    barangay = models.CharField(max_length=500, default="", null = True, blank=True)
     GENDER_CHOICES = (
     ('M', 'Male'),
     ('F', 'Female'),
