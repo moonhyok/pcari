@@ -121,7 +121,7 @@ def rate(request, qid):
 	try:
 		q = QUAN_QUESTIONS[QUAN_QUESTIONS.index([x for x in QUAN_QUESTIONS if x.qid == int(qid)][0])+1]
 	except:
-		return personal(request, qid)
+		return personal(request)
 
 	# if progression.num_rated < Q_COUNT:
 		# if progression.num_rated < QUAN_COUNT:
