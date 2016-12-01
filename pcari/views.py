@@ -76,6 +76,13 @@ def create_user(request):
 
 	question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
 
+	if q.qid == 5:
+		scale_description = "0 (0 days) to 9 (9+ days)" if TEXT['translate'] == "Tagalog" else "Tagalog translation"
+	elif q.qid == 8:
+		scale_description = "0 (0 weeks) to 9 (9+ weeks)" if TEXT['translate'] == "Tagalog" else "Tagalog translation"
+	else:
+		scale_description = TEXT['scale_description']
+
 	context = {
 	'translate':TEXT['translate'], 
 	'question_description':TEXT['question_description'], 
@@ -124,12 +131,13 @@ def rate(request, qid):
 	# 	return personal(request)
 
 	if progression.num_rated < Q_COUNT:
-		if progression.num_rated < QUAN_COUNT:
-			q = QUAN_QUESTIONS[progression.num_rated]
-			qualitative = False
-		else:
-			q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
-			qualitative = True
+		q = QUAN_QUESTIONS[QUAN_QUESTIONS.index([x for x in QUAN_QUESTIONS if x.qid == int(qid)][0])+1]
+		# if progression.num_rated < QUAN_COUNT:
+		# 	q = QUAN_QUESTIONS[progression.num_rated]
+		# 	qualitative = False
+		# else:
+		# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
+		# 	qualitative = True
 
 		question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
