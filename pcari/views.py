@@ -125,8 +125,8 @@ def rate(request, qid):
 
 	if progression.num_rated < Q_COUNT:
 		if progression.num_rated < QUAN_COUNT:
-		q = QUAN_QUESTIONS[progression.num_rated]
-		qualitative = False
+			q = QUAN_QUESTIONS[progression.num_rated]
+			qualitative = False
 		else:
 			q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
 			qualitative = True
