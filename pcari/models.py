@@ -23,7 +23,7 @@ class GeneralSetting(models.Model):
     filipino_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
 
     english_graph_description = models.CharField(max_length=500, default="The plots below show the average trend of the ratings.")
-    filipino_graph_description = models.CharField(max_length=500, default="Sa papaanong pamamaraan makakatulong ang inyong barangay upang higit na maging handa ka para sa isang kalamidad")
+    filipino_graph_description = models.CharField(max_length=500, default="Ang talaguhitan sa ibaba ay nagpapakita ng madalas na sagot ng ibang tao.")
 
     english_peer_evaluation_description = models.CharField(max_length=500, default="How helpful is this suggestion? ")
     filipino_peer_evaluation_description = models.CharField(max_length=500, default="Gaano ka halaga ang mungkahing ito?")

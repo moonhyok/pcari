@@ -201,11 +201,14 @@ def review(request):
 	# 			'translate':TEXT['translate']
 	# 			}
 	# 		return render(request, 'personal_data.html', context)    
-	age = request.POST['age']
-	if age == "":
-		age = -1
-	userdata = UserData(user=user, age=age, barangay=request.POST['barangay'], gender=request.POST['gender'])
-	userdata.save()
+	try:
+		age = request.POST['age']
+		if age == "":
+			age = -1
+		userdata = UserData(user=user, age=age, barangay=request.POST['barangay'], gender=request.POST['gender'])
+		userdata.save()
+	except:
+		pass
 
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.review = True

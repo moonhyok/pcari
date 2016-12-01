@@ -166,7 +166,7 @@
 
       x{{qid}}.domain(data.map(function(d) { 
         if (d.score == "skip" && lang == "English"){
-          return "lundag";
+          return "Lakta.";
         }
         return d.score; }));
       y{{qid}}.domain([0, d3.max(data, function(d) { return d.count; })]);
@@ -191,7 +191,7 @@
           })
           .attr("x", function(d) { 
             if (d.score == "skip" && lang == "English"){
-              return x{{qid}}("lundag"); 
+              return x{{qid}}("Lakta."); 
             } else{
               return x{{qid}}(d.score); 
             }})
