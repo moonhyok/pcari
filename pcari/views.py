@@ -118,36 +118,45 @@ def rate(request, qid):
 	progression.num_rated = len(rating_list)
 	progression.save()
 
-	if progression.num_rated < Q_COUNT:
+	try:
+		q = QUAN_QUESTIONS[QUAN_QUESTIONS.index([x for x in QUAN_QUESTIONS if x.qid == int(qid)][0])+1]
+	except:
+		return personal(request, qid)
+
+	# if progression.num_rated < Q_COUNT:
 		# if progression.num_rated < QUAN_COUNT:
-		q = QUAN_QUESTIONS[progression.num_rated]
-		qualitative = False
+		# q = QUAN_QUESTIONS[progression.num_rated]
+		# qualitative = False
 		# else:
 		# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
 		# 	qualitative = True
 
-		question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
+	question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
 
-		if q.qid == 5 or q.qid == 8:
-			scale_description = ""
-		else:
-			scale_description = TEXT['scale_description']
 
-		context = {
-		'translate':TEXT['translate'], 
-		'question_description':TEXT['question_description'], 
-		'feedback_description':TEXT['feedback_description'], 
-		'skip':TEXT['skip_button'],
-		'question_of':question_of,
-		'question': q.question if TEXT['translate'] == "Filipino" else q.filipino_question,
-		'scale_description':scale_description,
-		'qid': q.qid, 
-		'rating':True
-		}
-		return render(request, 'rating.html', context)
 
-	return personal(request)
+	if q.qid == 5:
+		scale_description = "0 (less than one day) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang araw) hanggang 9 (o mas mataas pa)"
+	elif q.qid == 8:
+		scale_description = "0 (less than one week) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang linggo) hanggang 9 (o mas mataas pa)"
+	else:
+		scale_description = TEXT['scale_description']
+
+	context = {
+	'translate':TEXT['translate'], 
+	'question_description':TEXT['question_description'], 
+	'feedback_description':TEXT['feedback_description'], 
+	'skip':TEXT['skip_button'],
+	'question_of':question_of,
+	'question': q.question if TEXT['translate'] == "Filipino" else q.filipino_question,
+	'scale_description':scale_description,
+	'qid': q.qid, 
+	'rating':True
+	}
+	return render(request, 'rating.html', context)
+
+	# return personal(request)
 
 def review(request):
 	user = request.user
