@@ -38,16 +38,19 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
     comment_ratings = CommentRating.objects.all()
     user_data = UserData.objects.all()
     for comment in comment_ratings:
-        u = user_data.filter(user=comment.user)[0]
-        writer.writerow([
-            smart_str(comment.user),
-            smart_str(u.age),
-            smart_str(u.barangay),
-            smart_str(u.gender),
-            smart_str(comment.cid),
-            smart_str(comment.score),
-            smart_str(comment.date),
-        ])
+        try:
+            u = user_data.filter(user=comment.user)[0]
+            writer.writerow([
+                smart_str(comment.user),
+                smart_str(u.age),
+                smart_str(u.barangay),
+                smart_str(u.gender),
+                smart_str(comment.cid),
+                smart_str(comment.score),
+                smart_str(comment.date),
+            ])
+        except:
+            pass
     return response
     
 dump_comment_ratings_csv.short_description = u"Dump comment ratings as CSV"
@@ -144,16 +147,19 @@ def dump_question_ratings_csv(modeladmin, request, queryset):
     ratings = Rating.objects.all()
     user_data = UserData.objects.all()
     for obj in ratings:
-        u = user_data.filter(user=obj.user)[0]
-        writer.writerow([
-            smart_str(obj.user),
-            smart_str(u.age),
-            smart_str(u.barangay),
-            smart_str(u.gender),
-            smart_str(obj.qid),
-            smart_str(obj.score),
-            smart_str(obj.date),
-        ])
+        try:
+            u = user_data.filter(user=obj.user)[0]
+            writer.writerow([
+                smart_str(obj.user),
+                smart_str(u.age),
+                smart_str(u.barangay),
+                smart_str(u.gender),
+                smart_str(obj.qid),
+                smart_str(obj.score),
+                smart_str(obj.date),
+            ])
+        except:
+            pass
     return response
 
 dump_question_ratings_csv.short_description = u"Dump question ratings as CSV"
