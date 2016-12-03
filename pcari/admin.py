@@ -38,7 +38,7 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
     comment_ratings = CommentRating.objects.all()
     user_data = UserData.objects.all()
     for comment in comment_ratings:
-        u = user_data.filter(user=comment.user)
+        u = user_data.filter(user=comment.user)[0]
         writer.writerow([
             smart_str(comment.user),
             smart_str(u.age),
@@ -144,7 +144,7 @@ def dump_question_ratings_csv(modeladmin, request, queryset):
     ratings = Rating.objects.all()
     user_data = UserData.objects.all()
     for obj in ratings:
-        u = user_data.filter(user=obj.user)
+        u = user_data.filter(user=obj.user)[0]
         writer.writerow([
             smart_str(obj.user),
             smart_str(u.age),
