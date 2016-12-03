@@ -20,7 +20,7 @@ from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comm
 # admin.site.register(Comment)
 # admin.site.register(UserProgression)
 
-def dump_comment_ratings_csv(modeladmin, request, queryset):
+def dump_comment_ratings_csv(modeladmin, request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=malasakit_comment_rating_data.csv'
     writer = csv.writer(response, csv.excel)
@@ -32,6 +32,7 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
         smart_str(u"User Gender"),
         smart_str(u"Corresponding Comment ID"),
         smart_str(u"Score"),
+        smart_str(u"Comment"),
         smart_str(u"Date Created"),
     ])
 
