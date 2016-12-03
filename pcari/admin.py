@@ -38,9 +38,11 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
 
     comment_ratings = CommentRating.objects.all()
     user_data = UserData.objects.all()
+    comments = Comment.objects.all()
     for comment in comment_ratings:
         try:
             u = user_data.filter(user=comment.user)[0]
+            c = comments.filter(id=comment.cid)[0]
             writer.writerow([
                 smart_str(comment.user),
                 smart_str(u.age),
@@ -48,6 +50,7 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
                 smart_str(u.gender),
                 smart_str(comment.cid),
                 smart_str(comment.score),
+                smart_str(c.comment),
                 smart_str(comment.date),
             ])
         except:
