@@ -20,7 +20,7 @@ from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comm
 # admin.site.register(Comment)
 # admin.site.register(UserProgression)
 
-def dump_comment_ratings_csv(modeladmin, request):
+def dump_comment_ratings_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=malasakit_comment_rating_data.csv'
     writer = csv.writer(response, csv.excel)
