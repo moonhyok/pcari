@@ -36,6 +36,7 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
     ])
 
     comment_ratings = CommentRating.objects.all()
+    user_data = UserData.objects.all()
     for comment in comment_ratings:
         u = user_data.filter(user=comment.user)
         writer.writerow([
