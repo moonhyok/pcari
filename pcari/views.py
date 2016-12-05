@@ -98,10 +98,14 @@ def create_user(request):
 
 def rate(request, qid):
 	user = request.user
+	print "user: ",user
+	print "qid: ",qid
 	try:
 		rating = Rating(user = user, qid = qid)
+		rating.save()
 	except:
-		rating = Rating.objects.all().filter(user=user,qid=qid)
+		rating = Rating.objects.all().filter(user=user,qid=qid)[0]
+		print "correct"
 
 
 	try:
@@ -113,6 +117,8 @@ def rate(request, qid):
 	if rating.score == "Skip" or rating.score == "Laktawan":
 		rating.score = -1
 		rating.save()
+
+	print rating.score
 
 	# if rating.score == "Submit" or rating.score == "Ipasa":
 	#     rating.response = request.POST['comment']
@@ -130,41 +136,44 @@ def rate(request, qid):
 	# except:
 	# 	return personal(request)
 
-	if progression.num_rated < Q_COUNT:
+	# if progression.num_rated < Q_COUNT:
+	try:
 		q = QUAN_QUESTIONS[QUAN_QUESTIONS.index([x for x in QUAN_QUESTIONS if x.qid == int(qid)][0])+1]
-		# if progression.num_rated < QUAN_COUNT:
-		# 	q = QUAN_QUESTIONS[progression.num_rated]
-		# 	qualitative = False
-		# else:
-		# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
-		# 	qualitative = True
+	except:
+		return personal(request)
+	# if progression.num_rated < QUAN_COUNT:
+	# 	q = QUAN_QUESTIONS[progression.num_rated]
+	# 	qualitative = False
+	# else:
+	# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
+	# 	qualitative = True
 
-		question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
+	question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
 
 
 
-		if q.qid == 5:
-			scale_description = "0 (less than one day) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang araw) hanggang 9 (o mas mataas pa)"
-		elif q.qid == 8:
-			scale_description = "0 (less than one week) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang linggo) hanggang 9 (o mas mataas pa)"
-		else:
-			scale_description = TEXT['scale_description']
+	if q.qid == 5:
+		scale_description = "0 (less than one day) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang araw) hanggang 9 (o mas mataas pa)"
+	elif q.qid == 8:
+		scale_description = "0 (less than one week) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang linggo) hanggang 9 (o mas mataas pa)"
+	else:
+		scale_description = TEXT['scale_description']
 
-		context = {
-		'translate':TEXT['translate'], 
-		'question_description':TEXT['question_description'], 
-		'feedback_description':TEXT['feedback_description'], 
-		'skip':TEXT['skip_button'],
-		'question_of':question_of,
-		'question': q.question if TEXT['translate'] == "Filipino" else q.filipino_question,
-		'scale_description':scale_description,
-		'qid': q.qid, 
-		'rating':True
-		}
-		return render(request, 'rating.html', context)
+	context = {
+	'translate':TEXT['translate'], 
+	'question_description':TEXT['question_description'], 
+	'feedback_description':TEXT['feedback_description'], 
+	'skip':TEXT['skip_button'],
+	'question_of':question_of,
+	'question': q.question if TEXT['translate'] == "Filipino" else q.filipino_question,
+	'scale_description':scale_description,
+	'qid': q.qid, 
+	'rating':True
+	}
+	return render(request, 'rating.html', context)
 
-	return personal(request)
+	# return personal(request)
 
 def review(request):
 	user = request.user
@@ -219,6 +228,8 @@ def review(request):
 	rating_list = map(lambda x: x.qid, r)
 	user_ratings.sort(key=lambda x: x[0])
 
+	print user_ratings
+
 	# BUG
 	if TEXT['translate'] == "Filipino":
 		tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tag,x.qid,-2), q)
@@ -261,6 +272,7 @@ def personal(request):
 	'male':TEXT['male'],
 	'female':TEXT['female'],
 	'select':TEXT['select'],
+	'personal':TEXT['personal'],
 	'translate':TEXT['translate']
 	}
 	return render(request, 'personal_data.html', context)
@@ -329,11 +341,13 @@ def logout(request):
 	
 	try:
 		c = Comment(user=user)
-		c.comment = request.POST['comment']
+		
 		if TEXT['translate'] == "Filipino":
 			c.original_language = "English"
+			c.comment = request.POST['comment']
 		else:
 			c.original_language = "Filipino"
+			c.tagalog_comment = request.POST['comment']
 		c.save()
 		# logout(request)
 	except:

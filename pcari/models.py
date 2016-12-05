@@ -35,7 +35,7 @@ class GeneralSetting(models.Model):
     filipino_feedback_description = models.CharField(max_length=500, default="Sa dulo, mabibigyan ka ng pagkakataon na magbigay ng iyong mungkahing ideya")
 
     english_bloom_description = models.CharField(max_length=500, default="Each sphere below represents an idea proposed by another user. Click on the sphere to rate an idea.")
-    filipino_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba")
+    filipino_bloom_description = models.CharField(max_length=500, default="Kumakatawan sa mungkahing ideya ng ibang tao ang bawat bilog sa ibaba. Pindutin ang isang bilog sa ibaba para magsimula.")
 
     english_begin_button = "Begin"
     english_skip_button = "Skip"
@@ -97,6 +97,9 @@ class GeneralSetting(models.Model):
     english_error = models.CharField(max_length=300, default="Please enter the following fields")
     filipino_error = models.CharField(max_length=300, default="Paki sagutan ang mga sumusunod para maikumpara ang iyong sagot sa iba")
 
+    english_personal = models.CharField(max_length=300, default="Please enter the following to see how you compare with others")
+    filipino_personal = models.CharField(max_length=300, default="Paki sagutan ang mga sumusunod para maikumpara ang iyong sagot sa iba")
+
 
     def get_text(self, language = None):
         if language == None:
@@ -133,6 +136,7 @@ class GeneralSetting(models.Model):
             "male": self.english_male,
             "female": self.english_female,
             "error": self.english_error,
+            "personal": self.english_personal,
             'question_of' : self.english_question_of}
         else:
             return {'translate':translate,
@@ -163,6 +167,7 @@ class GeneralSetting(models.Model):
             "male": self.filipino_male,
             "female": self.filipino_female,
             "error": self.filipino_error,
+            "personal": self.filipino_personal,
             'question_of' : self.filipino_question_of}
 
 class QuantitativeQuestion(models.Model):
@@ -201,7 +206,7 @@ class Rating(models.Model):
     accounted = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('user', 'qid')
+        unique_together = (('user', 'qid'),)
 
 class Comment(models.Model):
     LANGUAGE_CHOICES = (
