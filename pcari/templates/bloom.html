@@ -264,7 +264,8 @@ function post(d) {
     if (d.cid == 0){
       form.setAttribute("action", "{% url 'pcari:comment' %}");  
     } else {
-      form.setAttribute("action", "{% url 'pcari:get_comment' %}");  
+      var url = "{% url 'pcari:get_comment' 999 %}".replace (999, d.cid);
+      form.setAttribute("action", url);  
     }
     
 

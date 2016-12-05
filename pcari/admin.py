@@ -20,6 +20,13 @@ from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comm
 # admin.site.register(Comment)
 # admin.site.register(UserProgression)
 
+class Empty:
+    def __init__(self):
+        self.age = ""
+        self.barangay = ""
+        self.gender = ""
+        self.comment = ""
+
 def dump_comment_ratings_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=malasakit_comment_rating_data.csv'
@@ -42,8 +49,14 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
     for comment in comment_ratings:
         try:
             u = user_data.filter(user=comment.user)[0]
+        except:
+            u = Empty()
+
+        try:
             c = comments.filter(id=comment.cid)[0]
-            writer.writerow([
+        except:
+            c = Empty()
+        writer.writerow([
                 smart_str(comment.user),
                 smart_str(u.age),
                 smart_str(u.barangay),
@@ -53,8 +66,6 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
                 smart_str(c.comment),
                 smart_str(comment.date),
             ])
-        except:
-            pass
     return response
     
 dump_comment_ratings_csv.short_description = u"Dump comment ratings as CSV"
@@ -152,18 +163,19 @@ def dump_question_ratings_csv(modeladmin, request, queryset):
     user_data = UserData.objects.all()
     for obj in ratings:
         try:
-            u = user_data.filter(user=obj.user)[0]
-            writer.writerow([
-                smart_str(obj.user),
-                smart_str(u.age),
-                smart_str(u.barangay),
-                smart_str(u.gender),
-                smart_str(obj.qid),
-                smart_str(obj.score),
-                smart_str(obj.date),
-            ])
+            u = user_data.filter(user=comment.user)[0]
         except:
-            pass
+            u = Empty()
+
+        writer.writerow([
+            smart_str(obj.user),
+            smart_str(u.age),
+            smart_str(u.barangay),
+            smart_str(u.gender),
+            smart_str(obj.qid),
+            smart_str(obj.score),
+            smart_str(obj.date),
+        ])
     return response
 
 dump_question_ratings_csv.short_description = u"Dump question ratings as CSV"

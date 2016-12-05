@@ -19,30 +19,61 @@ import random
 # !IMPORTANT! YOU MUST COMMENT OUT THE FOLLOWING GLOBAL VARIABLES
 # IF YOU MAKE CHANGES TO models.py
 QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
-QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
+# QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
 QUAN_COUNT = QuantitativeQuestion.objects.all().count()
-QUAL_COUNT = QualitativeQuestion.objects.all().count()
+# QUAL_COUNT = QualitativeQuestion.objects.all().count()
 
-Q_COUNT = QUAN_COUNT + QUAL_COUNT
+Q_COUNT = QUAN_COUNT
 
 random.shuffle(QUAN_QUESTIONS)
-random.shuffle(QUAL_QUESTIONS)
+# random.shuffle(QUAL_QUESTIONS)
 
 TEXT = GeneralSetting.objects.all()[0].get_text()
 
+def translate(language):
+	return {"English":"Filipino","Filipino":"English"}[language]
+
 
 def switch_language(request):
-	global TEXT 
-	TEXT= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
+	url = request.META.get('HTTP_REFERER').split("/")
+	# print url
+
+	user = request.user
+	# print user
+	# TEXT= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
 	try:
-		progression = UserProgression.objects.all().filter(user=request.user)[0]
-		if progression.num_rated <= Q_COUNT:
-			progression.num_rated -= 1
-			progression.save()
+		user_data = UserData.objects.all().filter(user=user)[0]
+		user_data.language = translate(user_data.language)
+		user_data.save()
 	except:
-		pass
-	
-	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+		global TEXT
+		TEXT= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
+
+
+	if "questions" in url:
+		return HttpResponseRedirect(reverse('pcari:create_user', args=(0,)))
+	elif "comparison" in url:
+		return HttpResponseRedirect(reverse('pcari:rate', args=(url[-2],)))
+	elif "personal" in url:
+		return HttpResponseRedirect(reverse('pcari:personal', args=(url[-2],)))
+	elif "review" in url:
+		return HttpResponseRedirect(reverse('pcari:review'))
+	elif "rate" in url:
+		return HttpResponseRedirect(reverse('pcari:get_comment', args=(url[-2],)))
+	elif "peerevaluation" in url or "bloom" in url:
+		return HttpResponseRedirect(reverse('pcari:bloom'))
+	elif "comment" in url:
+		return HttpResponseRedirect(reverse('pcari:comment'))
+	elif "help" in url:
+		return HttpResponseRedirect(reverse('pcari:help'))
+	elif "about" in url:
+		return HttpResponseRedirect(reverse('pcari:about'))
+	elif "logout" in url:
+		return HttpResponseRedirect(reverse('pcari:logout'))
+	else:
+		return HttpResponseRedirect(reverse('pcari:landing'))
+		
+	# return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def landing(request):
 	# logout(request)
@@ -56,25 +87,34 @@ def landing(request):
 	}
 	return render(request, 'landing.html', context)
 
-def create_user(request):
-
+def create_user(request, is_new = 1):
 	#User Authentication
-	uid = User.objects.all().count()
-	new_user = User.objects.create_user('%d' % uid,'%d@example.com' % uid,'%d' % uid)
-	new_user.save()
-	
-	user = authenticate(username=new_user.username, password=new_user.username)
-	
-	login(request,user)
+	if is_new == 1:
+		uid = User.objects.all().count()
+		new_user = User.objects.create_user('%d' % uid,'%d@example.com' % uid,'%d' % uid)
+		new_user.save()
+		
+		user = authenticate(username=new_user.username, password=new_user.username)
+		
+		login(request,user)
 
-	#Data Initialization
-	progression = UserProgression(user = user)
-	progression.landing = True
-	progression.save()
+		#Data Initialization
+		progression = UserProgression(user = user)
+		progression.landing = True
+		progression.save()
 
-	q = QUAN_QUESTIONS[progression.num_rated]
+		global TEXT
+		user_data = UserData(user=user, language=translate(TEXT['translate']))
+		user_data.save()
+	else:
+		user = request.user
+		user_data = UserData.objects.all().filter(user=user)[0]
 
-	question_of = TEXT['question_of'] % (progression.num_rated+1,Q_COUNT)
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+
+	q = QUAN_QUESTIONS[0]
+
+	question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
 	if q.qid == 5:
 		scale_description = "0 (0 days) to 9 (9+ days)" if TEXT['translate'] == "Tagalog" else "Tagalog translation"
@@ -98,14 +138,13 @@ def create_user(request):
 
 def rate(request, qid):
 	user = request.user
-	print "user: ",user
-	print "qid: ",qid
+	
 	try:
 		rating = Rating(user = user, qid = qid)
 		rating.save()
 	except:
 		rating = Rating.objects.all().filter(user=user,qid=qid)[0]
-		print "correct"
+		# print "correct"
 
 
 	try:
@@ -114,11 +153,11 @@ def rate(request, qid):
 	except:
 		pass
 
+	# print rating.score
+
 	if rating.score == "Skip" or rating.score == "Laktawan":
 		rating.score = -1
 		rating.save()
-
-	print rating.score
 
 	# if rating.score == "Submit" or rating.score == "Ipasa":
 	#     rating.response = request.POST['comment']
@@ -147,6 +186,9 @@ def rate(request, qid):
 	# else:
 	# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
 	# 	qualitative = True
+
+	user_data = UserData.objects.all().filter(user=user)[0]
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 
 	question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
@@ -219,6 +261,7 @@ def review(request):
 	except:
 		pass
 
+
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.review = True
 	progression.save()
@@ -228,9 +271,9 @@ def review(request):
 	rating_list = map(lambda x: x.qid, r)
 	user_ratings.sort(key=lambda x: x[0])
 
-	print user_ratings
-
-	# BUG
+	user_data = UserData.objects.all().filter(user=user)[0]
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+	
 	if TEXT['translate'] == "Filipino":
 		tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tag,x.qid,-2), q)
 	else:
@@ -262,6 +305,8 @@ def personal(request):
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.personal_data = True
 	progression.save()
+	user_data = UserData.objects.all().filter(user=user)[0]
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 	context = {
 	'about':TEXT['about'],
 	'rate_more':TEXT['rate_more'],
@@ -279,15 +324,19 @@ def personal(request):
 
 def bloom(request, done = False):
 	user = request.user
-	try:
-		progression = UserProgression.objects.all().filter(user=user)[0]
-		progression.bloom = True
-		progression.save()
-	except:
-		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+	# try:
+	progression = UserProgression.objects.all().filter(user=user)[0]
+	progression.bloom = True
+	progression.save()
+	# except:
+	# 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+	if progression.num_peer_rated >= 2:
+		done = True
 
 	# comments = map(lambda x: x.id, Comment.objects.all())
-	comments = Comment.objects.all()
+	comments = list(Comment.objects.all())
+	random.shuffle(comments)
 	if done:
 		data = [{"cid":0,"x_seed":0,"y_seed":0,"shift":0,"n":0}]
 	else:
@@ -304,6 +353,9 @@ def bloom(request, done = False):
 		data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
 		n += 1
 
+	# print data
+	user_data = UserData.objects.all().filter(user=user)[0]
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 	context = {
 	'translate':TEXT['translate'],
 	'bloom_description':TEXT['bloom_description'],
@@ -322,6 +374,8 @@ def comment(request):
 	except:
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+	user_data = UserData.objects.all().filter(user=user)[0]
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 	context = {
 	'translate':TEXT['translate'], 
 	'comment_description':TEXT['comment_description'],
@@ -329,16 +383,18 @@ def comment(request):
 	}
 	return render(request, 'comment.html', context)
 
-def logout(request):
+def logout_view(request):
 	user = request.user
 	try:
 		progression = UserProgression.objects.all().filter(user=user)[0]
 		progression.logout = True
 		progression.save()
+		user_data = UserData.objects.all().filter(user=user)[0]
+		TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 	except:
-		pass
+		global TEXT
 
-	
+
 	try:
 		c = Comment(user=user)
 		
@@ -353,27 +409,34 @@ def logout(request):
 	except:
 		pass
 
+	logout(request)
+
 	context = {
 	'translate':TEXT['translate'],
 	'share_description':TEXT['share_description'],
 	'learn_more':TEXT['learn_more'],
 	'exit':TEXT['exit']
 	}
-	generate()
+	generate(request)
 	comment_update()
 	return render(request, 'logout.html', context)
 
-def get_comment(request):
-	cid = request.GET.get("cid")
+def get_comment(request, cid):
+	user = request.user
+	cid = cid
 	c = Comment.objects.all().filter(id=cid)[0]
-	# context = {'translate':TEXT['translate'],'comment': c.comment, 'cid': cid}
+	user_data = UserData.objects.all().filter(user=user)[0]
+	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+	comment = c.comment if TEXT['translate'] == "Filipino" else c.filipino_comment
+	if comment == "":
+		comment = c.comment if TEXT['translate'] == "English" else c.filipino_comment
 	context = {
 	'translate':TEXT['translate'],
 	'peer_evaluation_description':TEXT['peer_evaluation_description'], 
 	'skip':TEXT['skip_button'],
 	'scale_description':TEXT['scale_description'],
 	'cid':cid, 
-	'comment': c.comment if TEXT['translate'] == "Filipino" else c.filipino_comment
+	'comment': comment
 	}
 	return render(request, 'rating.html', context)
 
@@ -420,8 +483,10 @@ def update_ratings(user):
 
 	# for q in questions:
 
-def generate():
+def generate(request):
 	ratings = Rating.objects.all()
+
+	url = request.META.get('HTTP_REFERER').split("/")
 
 	r_count = []
 	for _ in range(11):
@@ -439,14 +504,22 @@ def generate():
 			elif r == -1:
 				r_count[10] += 1
 
-
-		with open("/var/www/opinion/opinion.berkeley.edu/pcari/pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
-			datafile.write("score	count\n")
-			for j in range(len(r_count)):
-				if j == len(r_count)-1:
-					datafile.write("skip"+"	"+str(r_count[j])+"\n")
-				else:
-					datafile.write(str(j)+"	"+str(r_count[j])+"\n")
+		if "pcari" in url:
+			with open("/var/www/opinion/opinion.berkeley.edu/pcari/pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
+				datafile.write("score	count\n")
+				for j in range(len(r_count)):
+					if j == len(r_count)-1:
+						datafile.write("skip"+"	"+str(r_count[j])+"\n")
+					else:
+						datafile.write(str(j)+"	"+str(r_count[j])+"\n")
+		else:
+			with open("pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
+				datafile.write("score	count\n")
+				for j in range(len(r_count)):
+					if j == len(r_count)-1:
+						datafile.write("skip"+"	"+str(r_count[j])+"\n")
+					else:
+						datafile.write(str(j)+"	"+str(r_count[j])+"\n")
 
 def comment_update():
 	comments = Comment.objects.all()

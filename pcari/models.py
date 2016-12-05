@@ -17,7 +17,7 @@ class GeneralSetting(models.Model):
     default_language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, default="English")
 
     english_landing_description = models.CharField(max_length=500, default="How prepared are you in times of disaster? %d barangay citizens have responded. Join them! It only takes a minute.")
-    filipino_landing_description = models.CharField(max_length=500, default="Maglaan ng isang minuto para tingnan kung gaano kayo kahanda, at sumali sa %d iba pa na bumisita sa isang onlayn na diskusyon tungkol sa kahandaan.")
+    filipino_landing_description = models.CharField(max_length=500, default="Gaano ka kahanda sa panahon ng kalamidad? %d na ang nag MALASAKIT. Sali na! Isang minuto lamang ang kailangan.")
 
     english_question_description = models.CharField(max_length=500, default="Please select how strongly you agree with the following statement")
     filipino_question_description = models.CharField(max_length=500, default="Paki pili kung gaano kayo sumasang-ayon sa mga sumusunod na pangungusap")
@@ -192,7 +192,12 @@ class UserData(models.Model):
     ('M', 'Male'),
     ('F', 'Female'),
     )
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null = True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null = True, blank=True)
+    LANGUAGE_CHOICES = (
+    ('English', 'English'),
+    ('Filipino', 'Filipino'),
+    )
+    language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, default="Filipino")
 
 # If a user does not rate a question, the score will be -2.
 # If they choose to skip a question, the score will be -1.
