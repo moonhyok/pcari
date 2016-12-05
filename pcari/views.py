@@ -18,17 +18,17 @@ import random
 
 # !IMPORTANT! YOU MUST COMMENT OUT THE FOLLOWING GLOBAL VARIABLES
 # IF YOU MAKE CHANGES TO models.py
-# QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
-# # QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
-# QUAN_COUNT = QuantitativeQuestion.objects.all().count()
-# # QUAL_COUNT = QualitativeQuestion.objects.all().count()
+QUAN_QUESTIONS = list(QuantitativeQuestion.objects.all())
+# QUAL_QUESTIONS = list(QualitativeQuestion.objects.all())
+QUAN_COUNT = QuantitativeQuestion.objects.all().count()
+# QUAL_COUNT = QualitativeQuestion.objects.all().count()
 
-# Q_COUNT = QUAN_COUNT
+Q_COUNT = QUAN_COUNT
 
-# random.shuffle(QUAN_QUESTIONS)
-# # random.shuffle(QUAL_QUESTIONS)
+random.shuffle(QUAN_QUESTIONS)
+# random.shuffle(QUAL_QUESTIONS)
 
-# TEXT = GeneralSetting.objects.all()[0].get_text()
+TEXT = GeneralSetting.objects.all()[0].get_text()
 
 def translate(language):
 	return {"English":"Filipino","Filipino":"English"}[language]
@@ -90,7 +90,7 @@ def landing(request):
 def create_user(request, is_new = 1):
 	#User Authentication
 	if is_new == 1:
-		uid = User.objects.all().count()
+		uid = int(list(User.objects.all())[-1].username)+1
 		new_user = User.objects.create_user('%d' % uid,'%d@example.com' % uid,'%d' % uid)
 		new_user.save()
 		
@@ -419,6 +419,7 @@ def logout_view(request):
 	}
 	generate(request)
 	comment_update()
+	clean_empty()
 	return render(request, 'logout.html', context)
 
 def get_comment(request, cid):
@@ -476,7 +477,9 @@ def update_ratings(user):
 	ratings = Rating.objects.all().filter(user=user)
 	for r in ratings:
 		q = questions[r.qid-1]
-		ave = (q.average_score * q.number_rated + r.score) / (q.number_rated + 1)
+		if r.score == -1 or r.score == -2:
+			continue
+		ave = (q.average_score * q.number_rated + r.score + 0.0) / (q.number_rated + 1.0)
 		q.average_score = ave
 		q.number_rated += 1
 		q.save()
@@ -528,18 +531,30 @@ def comment_update():
 		ratings = CommentRating.objects.all().filter(cid=comment.id, accounted=False)
 		current_ave = comment.average_score * comment.number_rated
 		for rating in ratings:
+			if rating.score == -1 or rating.score == -2:
+				continue
 			current_ave += rating.score
 			rating.accounted = True
 			rating.save()
 		comment.number_rated += len(ratings)
 		if comment.number_rated == 0:
 			continue
-		comment.average_score = current_ave/comment.number_rated
+		comment.average_score = (current_ave+0.0)/(comment.number_rated+0.0)
 		comment.save()
 
 
+def clean_empty():
+	users = User.objects.all()
 
+	for u in users:
+		ratings = Rating.objects.all().filter(user=u)
+		if len(ratings) == 0:
+			u.delete()
+	comments = Comment.objects.all()
 
+	for c in comments:
+		if c == "":
+			c.delete()
 
 
 
