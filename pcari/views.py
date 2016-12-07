@@ -353,6 +353,8 @@ def bloom(request, done = False):
 			continue
 		if c.comment == "" and c.filipino_comment == "":
 			continue
+		if c.number_rated>100:
+			continue
 		data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
 		n += 1
 
