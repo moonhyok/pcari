@@ -336,6 +336,7 @@ def bloom(request, done = False):
 
 	# comments = map(lambda x: x.id, Comment.objects.all())
 	comments = list(Comment.objects.all())
+	random.seed(random.randint(1,200))
 	random.shuffle(comments)
 	if done:
 		data = [{"cid":0,"x_seed":0,"y_seed":0,"shift":0,"n":0}]
@@ -349,6 +350,8 @@ def bloom(request, done = False):
 		if n > 8:
 			break
 		if c.id in already_seen:
+			continue
+		if c.comment == "" and c.filipino_comment == "":
 			continue
 		data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
 		n += 1
