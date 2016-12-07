@@ -419,7 +419,7 @@ def logout_view(request):
 	}
 	generate(request)
 	comment_update()
-	clean_empty()
+	# clean_empty()
 	return render(request, 'logout.html', context)
 
 def get_comment(request, cid):
