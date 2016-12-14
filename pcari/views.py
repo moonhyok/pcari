@@ -252,15 +252,23 @@ def review(request):
 	# 			'translate':TEXT['translate']
 	# 			}
 	# 		return render(request, 'personal_data.html', context)    
+	age = request.POST['age']
 	try:
-		age = request.POST['age']
-		if age == "":
-			age = -1
-		userdata = UserData(user=user, age=age, barangay=request.POST['barangay'], gender=request.POST['gender'])
+		age = int(age)
+	except:
+		age = -1
+
+	barangay = request.POST['barangay']
+	gender = request.POST['gender']
+	try:
+		userdata = UserData(user=user, age=age, barangay=barangay, gender=gender)
 		userdata.save()
 	except:
-		pass
-
+		userdata = UserData.objects.all().filter(user=user)[0]
+		userdata.age = age
+		userdata.barangay = barangay
+		userdata.gender = gender
+		userdata.save()
 
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.review = True
@@ -537,6 +545,8 @@ def comment_update():
 		current_ave = comment.average_score * comment.number_rated
 		for rating in ratings:
 			if rating.score == -1 or rating.score == -2:
+				continue
+			if rating.accounted == True:
 				continue
 			current_ave += rating.score
 			rating.accounted = True
