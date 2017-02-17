@@ -251,15 +251,19 @@ def review(request):
 	# 			'select':TEXT['select'],
 	# 			'translate':TEXT['translate']
 	# 			}
-	# 		return render(request, 'personal_data.html', context)    
-	age = request.POST['age']
+	# 		return render(request, 'personal_data.html', context)
+
 	try:
+		age = request.POST['age']
 		age = int(age)
+		barangay = request.POST['barangay']
+		gender = request.POST['gender']
 	except:
 		age = -1
+		barangay = None
+		gender = None
 
-	barangay = request.POST['barangay']
-	gender = request.POST['gender']
+	
 	try:
 		userdata = UserData(user=user, age=age, barangay=barangay, gender=gender)
 		userdata.save()
