@@ -19,6 +19,7 @@ from pcari.models import QuantitativeQuestion, QualitativeQuestion, Rating, Comm
 # admin.site.register(Rating)
 # admin.site.register(Comment)
 # admin.site.register(UserProgression)
+# admin.site.register(UserData)
 
 class Empty:
     def __init__(self):
@@ -90,7 +91,7 @@ def export_comment_csv(modeladmin, request, queryset):
     ])
     comments = Comment.objects.all()
     for comment in comments:
-        u = user_data.filter(user=comment.user)
+        u = user_data.filter(user=comment.user)[0]
         writer.writerow([
             smart_str(comment.user),
             smart_str(u.age),
