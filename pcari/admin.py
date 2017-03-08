@@ -162,11 +162,12 @@ def dump_question_ratings_csv(modeladmin, request, queryset):
     ])
     ratings = Rating.objects.all()
     user_data = UserData.objects.all()
+    # users = User.objects.all()
     for obj in ratings:
         try:
-            u = user_data.filter(user=comment.user)[0]
+            u = user_data.filter(user=obj.user)[0]
         except:
-            u = Empty()
+            u = UserData()
 
         writer.writerow([
             smart_str(obj.user),
