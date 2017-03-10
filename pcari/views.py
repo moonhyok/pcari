@@ -426,6 +426,10 @@ def logout_view(request):
 	except:
 		pass
 
+	if len(list(User.objects.all())) % 10 == 0:
+		generate(request)
+		comment_update()
+
 	logout(request)
 
 	context = {
@@ -434,8 +438,7 @@ def logout_view(request):
 	'learn_more':TEXT['learn_more'],
 	'exit':TEXT['exit']
 	}
-	generate(request)
-	comment_update()
+	
 	# reset()
 	return render(request, 'logout.html', context)
 
