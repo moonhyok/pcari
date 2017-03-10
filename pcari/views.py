@@ -426,7 +426,7 @@ def logout_view(request):
 	except:
 		pass
 
-	if len(list(User.objects.all())) % 10 == 0:
+	if len(list(User.objects.all())) % 15 == 0:
 		generate(request)
 		comment_update()
 
