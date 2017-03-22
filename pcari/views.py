@@ -117,9 +117,9 @@ def create_user(request, is_new = 1):
 	question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
 	if q.qid == 5:
-		scale_description = "0 (0 days) to 9 (9+ days)" if TEXT['translate'] == "Tagalog" else "Tagalog translation"
+		scale_description = "0 (less than one day) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang araw) hanggang 9 (o mas mataas pa)"
 	elif q.qid == 8:
-		scale_description = "0 (0 weeks) to 9 (9+ weeks)" if TEXT['translate'] == "Tagalog" else "Tagalog translation"
+		scale_description = "0 (less than one week) to 9 (or more)" if TEXT['translate'] == "Filipino" else "Mula 0 (mas mababa sa isang linggo) hanggang 9 (o mas mataas pa)"
 	else:
 		scale_description = TEXT['scale_description']
 
@@ -420,7 +420,7 @@ def logout_view(request):
 			c.comment = request.POST['comment']
 		else:
 			c.original_language = "Filipino"
-			c.tagalog_comment = request.POST['comment']
+			c.filipino_comment = request.POST['comment']
 		c.save()
 		# logout(request)
 	except:

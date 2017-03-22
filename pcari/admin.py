@@ -38,8 +38,8 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
         smart_str(u"User Age"),
         smart_str(u"User Barangay"),
         smart_str(u"User Gender"),
-        smart_str(u"Corresponding Comment ID"),
-        smart_str(u"Score"),
+        smart_str(u"Number of ratings"),
+        smart_str(u"Average Score"),
         smart_str(u"Comment"),
         smart_str(u"Date Created"),
     ])
@@ -47,24 +47,28 @@ def dump_comment_ratings_csv(modeladmin, request, queryset):
     comment_ratings = CommentRating.objects.all()
     user_data = UserData.objects.all()
     comments = Comment.objects.all()
-    for comment in comment_ratings:
+    for comment in comments:
         try:
             u = user_data.filter(user=comment.user)[0]
         except:
             u = Empty()
 
-        try:
-            c = comments.filter(id=comment.cid)[0]
-        except:
-            c = Empty()
+        c = comment.comment
+
+        if c == "":
+            c = comment.filipino_comment
+        # try:
+        #     c = comments.filter(id=comment.cid)[0]
+        # except:
+        #     c = Empty()
         writer.writerow([
                 smart_str(comment.user),
                 smart_str(u.age),
                 smart_str(u.barangay),
                 smart_str(u.gender),
-                smart_str(comment.cid),
-                smart_str(comment.score),
-                smart_str(c.comment),
+                smart_str(comment.number_rated),
+                smart_str(comment.average_score),
+                smart_str(c),
                 smart_str(comment.date),
             ])
     return response
