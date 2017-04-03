@@ -45,6 +45,7 @@ function goBack() {
         </div>
       </a>
 
+      {% if logged_in %}
       <a href="{% url 'pcari:bloom' %}" style="text-decoration: none;">
         <div class="burger-div burger-div-others">
           {{rate_more}}
@@ -55,6 +56,7 @@ function goBack() {
           {{suggest_own}}
         </div>
       </a>
+     {% endif %}
 
       <a href="{% url 'pcari:logout' %}" style="text-decoration: none;">
         <div class="burger-div burger-div-logout">
