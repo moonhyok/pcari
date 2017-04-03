@@ -28,7 +28,7 @@ Q_COUNT = QUAN_COUNT
 random.shuffle(QUAN_QUESTIONS)
 # random.shuffle(QUAL_QUESTIONS)
 
-TEXT = GeneralSetting.objects.all()[0].get_text()
+#TEXT = GeneralSetting.objects.all()[0].get_text()
 
 def translate(language):
 	return {"English":"Filipino","Filipino":"English"}[language]
@@ -40,14 +40,16 @@ def switch_language(request):
 
 	user = request.user
 	# print user
-	# TEXT= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
-	try:
+	TEXT= request.session['TEXT']
+	if user.is_authenticated():
 		user_data = UserData.objects.all().filter(user=user)[0]
 		user_data.language = translate(user_data.language)
 		user_data.save()
-	except:
-		global TEXT
-		TEXT= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
+                request.session['language'] = user_data.language
+		request.session['TEXT']= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
+	else:
+		request.session['TEXT']= GeneralSetting.objects.all()[0].get_text(TEXT['translate'])
+                request.session['language'] = TEXT['translate']
 
 
 	if "questions" in url:
@@ -75,8 +77,15 @@ def switch_language(request):
 		
 	# return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+def init_text_cookie(request):
+	if 'TEXT' not in request.session:
+		request.session['TEXT']= GeneralSetting.objects.all()[0].get_text('Filipino')
+
 def landing(request):
 	# logout(request)
+	init_text_cookie(request)
+        TEXT = request.session['TEXT']
+
 	description = TEXT['landing_description'] % len(User.objects.all())
 	context = {
 	'translate':TEXT['translate'], 
@@ -88,6 +97,8 @@ def landing(request):
 	return render(request, 'landing.html', context)
 
 def create_user(request, is_new = 1):
+	init_text_cookie(request)
+
 	#User Authentication
 	if is_new == 1:
 		uid = int(list(User.objects.all())[-1].username)+1
@@ -103,14 +114,16 @@ def create_user(request, is_new = 1):
 		progression.landing = True
 		progression.save()
 
-		global TEXT
+		init_text_cookie(request)
+		TEXT = GeneralSetting.objects.all()[0].get_text(request.session['TEXT']['translate'])
 		user_data = UserData(user=user, language=translate(TEXT['translate']))
 		user_data.save()
 	else:
 		user = request.user
 		user_data = UserData.objects.all().filter(user=user)[0]
 
-	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+	request.session['TEXT'] = GeneralSetting.objects.all()[0].get_text(user_data.language)
+        TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 
 	q = QUAN_QUESTIONS[0]
 
@@ -137,6 +150,8 @@ def create_user(request, is_new = 1):
 	return render(request, 'rating.html', context)
 
 def rate(request, qid):
+	init_text_cookie(request)
+
 	user = request.user
 	
 	try:
@@ -187,8 +202,11 @@ def rate(request, qid):
 	# 	q = QUAL_QUESTIONS[progression.num_rated-QUAN_COUNT]
 	# 	qualitative = True
 
-	user_data = UserData.objects.all().filter(user=user)[0]
-	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+        if user.is_authenticated():
+	    user_data = UserData.objects.all().filter(user=user)[0]
+	    TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+        else:
+            TEXT = GeneralSetting.objects.all()[0].get_text(request.session['language'])
 
 	question_of = TEXT['question_of'] % (QUAN_QUESTIONS.index(q)+1,Q_COUNT)
 
@@ -218,6 +236,8 @@ def rate(request, qid):
 	# return personal(request)
 
 def review(request):
+	init_text_cookie(request)
+
 	user = request.user
 	# if not UserData.objects.all().filter(user=user).exists():
 	# 	try:
@@ -303,7 +323,16 @@ def review(request):
 	return render(request, 'review.html', context)
 
 def help(request):
+	init_text_cookie(request)
+	TEXT = request.session['TEXT']
+	
+	started = request.user.is_authenticated()	
+	if started:
+		up = UserProgression.objects.filter(user=request.user)[0]
+		started = up.bloom
+
 	context = {
+        'logged_in': started,
 	'about':TEXT['about'],
 	'rate_more':TEXT['rate_more'],
 	'suggest_own':TEXT['suggest_own'],
@@ -313,6 +342,8 @@ def help(request):
 	return render(request, 'help.html', context)
 
 def personal(request):
+	init_text_cookie(request)
+
 	user = request.user
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.personal_data = True
@@ -335,6 +366,8 @@ def personal(request):
 	return render(request, 'personal_data.html', context)
 
 def bloom(request, done = False):
+	init_text_cookie(request)
+
 	user = request.user
 	# try:
 	progression = UserProgression.objects.all().filter(user=user)[0]
@@ -383,6 +416,8 @@ def bloom(request, done = False):
 	return render(request, 'bloom.html', context)
 
 def comment(request):
+	init_text_cookie(request)
+
 	user = request.user
 	try:
 		progression = UserProgression.objects.all().filter(user=user)[0]
@@ -401,15 +436,19 @@ def comment(request):
 	return render(request, 'comment.html', context)
 
 def logout_view(request):
+	init_text_cookie(request)
+
 	user = request.user
 	try:
 		progression = UserProgression.objects.all().filter(user=user)[0]
 		progression.logout = True
 		progression.save()
 		user_data = UserData.objects.all().filter(user=user)[0]
-		TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
+		request.session['TEXT'] = GeneralSetting.objects.all()[0].get_text(user_data.language)
 	except:
-		global TEXT
+		pass
+
+	TEXT  = request.session['TEXT']
 
 
 	try:
@@ -443,6 +482,8 @@ def logout_view(request):
 	return render(request, 'logout.html', context)
 
 def get_comment(request, cid):
+	init_text_cookie(request)
+
 	user = request.user
 	cid = cid
 	c = Comment.objects.all().filter(id=cid)[0]
@@ -462,6 +503,8 @@ def get_comment(request, cid):
 	return render(request, 'rating.html', context)
 
 def rate_comment(request, cid):
+	init_text_cookie(request)
+
 	user = request.user
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.peer_rating = True
@@ -490,9 +533,13 @@ def rate_comment(request, cid):
 	return bloom(request)
 
 def about(request):
+	init_text_cookie(request)
+
 	return render(request, 'about.html', {})
 
 def update_ratings(user):
+	init_text_cookie(request)
+
 	questions = QuantitativeQuestion.objects.all()
 	ratings = Rating.objects.all().filter(user=user)
 	for r in ratings:
@@ -507,6 +554,8 @@ def update_ratings(user):
 	# for q in questions:
 
 def generate(request):
+	init_text_cookie(request)
+
 	ratings = Rating.objects.all()
 
 	url = request.META.get('HTTP_REFERER').split("/")
