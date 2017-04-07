@@ -275,15 +275,22 @@ def review(request):
 	
 	try:
 		age = request.POST['age']
-		barangay = request.POST['barangay']
-		gender = request.POST['gender']
 		age = int(age)
 	except:
 		age = -1
-		barangay = ""
+		
 		gender = ""
 
-	
+	try:
+		barangay = request.POST['barangay']
+	except:
+		barangay = ""
+
+	try:
+		gender = request.POST['gender']
+	except:
+		gender = ""
+		
 	try:
 		userdata = UserData(user=user, age=age, barangay=barangay, gender=gender)
 		userdata.save()
@@ -381,8 +388,9 @@ def bloom(request, done = False):
 
 	# comments = map(lambda x: x.id, Comment.objects.all())
 	comments = list(Comment.objects.all())
-	random.seed(random.randint(1,200))
-	random.shuffle(comments)
+	random.seed(random.randint(1,500))
+	# random.shuffle(comments)
+	comments.sort(key = lambda c: c.se,reverse=True)
 	if done:
 		data = [{"cid":0,"x_seed":0,"y_seed":0,"shift":0,"n":0}]
 	else:
@@ -392,15 +400,19 @@ def bloom(request, done = False):
 	already_seen = map(lambda x: x.cid, CommentRating.objects.all().filter(user=user))
 	n = 1
 	for c in comments:
+		r = random.random()
+		if c.se < r:
+			continue
 		if n > 8:
 			break
 		if c.id in already_seen:
 			continue
 		if c.comment == "" and c.filipino_comment == "":
 			continue
-		if c.number_rated>30:
-			continue
+		# if c.number_rated>30:
+		# 	continue
 		data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
+		print c.se
 		n += 1
 
 	# print data
@@ -465,7 +477,7 @@ def logout_view(request):
 	except:
 		pass
 
-	if len(list(User.objects.all())) % 15 == 0:
+	if len(list(User.objects.all())) % 30 == 0:
 		generate(request)
 		comment_update()
 
@@ -512,6 +524,8 @@ def rate_comment(request, cid):
 	progression.save()
 	cid = cid
 
+	print cid
+
 	rating = CommentRating(user=user)
 	rating.cid = cid
 	try:
@@ -525,6 +539,17 @@ def rate_comment(request, cid):
 	rating.score = score
 
 	rating.save()
+
+	# comment = Comment.objects.all().filter(id=cid)[0]
+	# current_ave = comment.average_score * comment.number_rated
+	# if rating.score != -1 and rating.score != -2:
+	# 	print rating.score
+	# 	current_ave += score
+	# 	rating.accounted = True
+	# 	rating.save()
+	# 	comment.number_rated += 1
+	# comment.average_score = (current_ave+0.0)/(comment.number_rated+0.0)
+	# comment.save()
 
 	if progression.num_peer_rated >= 2:
 		# print "rate_comment peer>2"
@@ -607,7 +632,7 @@ def comment_update():
 			current_ave += rating.score
 			rating.accounted = True
 			rating.save()
-		comment.number_rated += len(ratings)
+			comment.number_rated += 1
 		if comment.number_rated == 0:
 			continue
 		comment.average_score = (current_ave+0.0)/(comment.number_rated+0.0)
@@ -626,8 +651,6 @@ def clean_empty():
 	for c in comments:
 		if c == "":
 			c.delete()
-
-
 
 
 

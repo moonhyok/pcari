@@ -227,6 +227,7 @@ class Comment(models.Model):
     number_rated = models.IntegerField(default = 0)
     tag = models.CharField(max_length=200, default = "", null=True)
     original_language = models.CharField(max_length=15, choices=LANGUAGE_CHOICES, null=True, blank=True)
+    se = models.FloatField(default = 0, null = True, blank = True);
 
 class CommentRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index = True)

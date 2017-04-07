@@ -276,7 +276,7 @@ unflag_comment.short_description = u"Unflag Comment"
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'comment', 'filipino_comment', 'average_score', 'number_rated', 'tag', 'original_language']
+    list_display = ['user', 'comment', 'filipino_comment', 'average_score', 'number_rated', 'se', 'tag', 'original_language']
     list_editable = ['comment','filipino_comment']
     ordering = ['user']
     actions = [flag_comment,export_comment_csv, dump_comment_ratings_csv]#, export_comment_xlsx]
