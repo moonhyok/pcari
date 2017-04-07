@@ -388,9 +388,11 @@ def bloom(request, done = False):
 
 	# comments = map(lambda x: x.id, Comment.objects.all())
 	comments = list(Comment.objects.all())
+	comments_reverse = list(Comment.objects.all())
 	random.seed(random.randint(1,500))
 	# random.shuffle(comments)
 	comments.sort(key = lambda c: c.se,reverse=True)
+	comments_reverse.sort(key = lambda c: c.se)
 	if done:
 		data = [{"cid":0,"x_seed":0,"y_seed":0,"shift":0,"n":0}]
 	else:
@@ -403,6 +405,19 @@ def bloom(request, done = False):
 		r = random.random()
 		if c.se < r:
 			continue
+		if n > 4:
+			break
+		if c.id in already_seen:
+			continue
+		if c.comment == "" and c.filipino_comment == "":
+			continue
+		# if c.number_rated>30:
+		# 	continue
+		data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
+		# print c.se
+		n += 1
+
+	for c in comments_reverse:
 		if n > 8:
 			break
 		if c.id in already_seen:
@@ -412,7 +427,7 @@ def bloom(request, done = False):
 		# if c.number_rated>30:
 		# 	continue
 		data.append({"cid":c.id, "x_seed":random.random(), "y_seed":random.random(), "shift":random.random() * (1 + 1) - 1,"n":n })
-		print c.se
+		# print c.se
 		n += 1
 
 	# print data
@@ -473,13 +488,15 @@ def logout_view(request):
 			c.original_language = "Filipino"
 			c.filipino_comment = request.POST['comment']
 		c.save()
-		# logout(request)
 	except:
 		pass
 
-	if len(list(User.objects.all())) % 30 == 0:
+	if len(list(User.objects.all())) % 17 == 0:
 		generate(request)
 		comment_update()
+
+	if len(list(User.objects.all())) % 31 == 0:
+		se_update()
 
 	logout(request)
 
@@ -638,6 +655,20 @@ def comment_update():
 		comment.average_score = (current_ave+0.0)/(comment.number_rated+0.0)
 		comment.save()
 
+def se_update():
+	comments = Comment.objects.all()
+	for comment in comments:
+		if comment.number_rated == 0:
+			continue
+		ratings = CommentRating.objects.all().filter(cid=comment.id)
+		var = 0
+		ave = comment.average_score
+		for rating in ratings:
+			if rating.score == -1 or rating.score == -2:
+				continue
+			var += (rating.score - ave + 0.0)**2 / (comment.number_rated + 0.0)
+		comment.se = (sqrt(var) + 0.0) / (sqrt(comment.number_rated) + 0.0)
+		comment.save()
 
 def clean_empty():
 	users = User.objects.all()
