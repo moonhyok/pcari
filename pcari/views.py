@@ -501,12 +501,12 @@ def logout_view(request):
 	except:
 		pass
 
-	if len(list(User.objects.all())) % 17 == 0:
-		generate(request)
-		comment_update()
+	# if len(list(User.objects.all())) % 17 == 0:
+	# 	generate(request)
+	# 	comment_update()
 
-	if len(list(User.objects.all())) % 31 == 0:
-		se_update()
+	# if len(list(User.objects.all())) % 31 == 0:
+	# 	se_update()
 
 	context = {
 	'translate':TEXT['translate'],
@@ -563,19 +563,7 @@ def rate_comment(request, cid):
 
 	rating.save()
 
-	# comment = Comment.objects.all().filter(id=cid)[0]
-	# current_ave = comment.average_score * comment.number_rated
-	# if rating.score != -1 and rating.score != -2:
-	# 	print rating.score
-	# 	current_ave += score
-	# 	rating.accounted = True
-	# 	rating.save()
-	# 	comment.number_rated += 1
-	# comment.average_score = (current_ave+0.0)/(comment.number_rated+0.0)
-	# comment.save()
-
 	if progression.num_peer_rated >= 2:
-		# print "rate_comment peer>2"
 		return bloom(request,done=True)
 
 	return bloom(request)
