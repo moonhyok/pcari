@@ -178,6 +178,14 @@ class QuantitativeQuestion(models.Model):
     tag = models.CharField(max_length=50, default="")
     filipino_tag = models.CharField(max_length=50, default="")
     filipino_question = models.CharField(max_length=500, default="walang filipino pagsasalin")
+    def get_question(self,language=None):
+        # print "what comes into get Q " + language 
+        if language == "English":
+            q = self.question
+        else:
+            # print "in model filipno"
+            q = self.filipino_question
+        return {'qid':self.qid,'question':q}
 
 class QualitativeQuestion(models.Model):
     qid = models.AutoField(primary_key=True)
