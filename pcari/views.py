@@ -299,30 +299,23 @@ def review(request):
 	
 	try:
 		age = request.POST['age']
+		if age == "":
+			age = -1
 		age = int(age)
-	except:
-		age = -1
-		
-	try:
 		barangay = request.POST['barangay']
-	except:
-		barangay = ""
-
-	try:
 		gender = request.POST['gender']
-	except:
-		gender = ""
-	
-
-	try:
-		userdata = UserData(user=user, age=age, barangay=barangay, gender=gender)
-		userdata.save()
-	except:
-		userdata = UserData.objects.all().filter(user=user)[0]
-		userdata.age = age
-		userdata.barangay = barangay
-		userdata.gender = gender
-		userdata.save()
+		if UserData.objects.all().filter(user=user).count() > 0:
+			userdata = UserData.objects.all().filter(user=user)[0]
+			userdata.age = age
+			userdata.barangay = barangay
+			userdata.gender = gender
+			userdata.save()
+		else:
+			userdata = UserData(user=user, age=age, barangay=barangay, gender=gender)
+			userdata.save()
+	except MultiValueDictKeyError:
+		pass
+		
 
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.review = True
@@ -340,9 +333,6 @@ def review(request):
 	rating_list = map(lambda x: x.qid, r)
 	user_ratings.sort(key=lambda x: x[0])
 	# print user_ratings
-
-	user_data = UserData.objects.all().filter(user=user)[0]
-	TEXT = GeneralSetting.objects.all()[0].get_text(user_data.language)
 	
 	if TEXT['translate'] == "Filipino":
 		tag = map(lambda x: (x.tag,x.qid,user_ratings[x.qid-1][1]) if x.qid in rating_list else (x.tag,x.qid,-2), q)
