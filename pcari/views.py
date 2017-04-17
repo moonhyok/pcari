@@ -498,8 +498,6 @@ def logout_view(request):
 	if len(list(User.objects.all())) % 31 == 0:
 		se_update()
 
-	logout(request)
-
 	context = {
 	'translate':TEXT['translate'],
 	'share_description':TEXT['share_description'],
@@ -541,7 +539,6 @@ def rate_comment(request, cid):
 	progression.save()
 	cid = cid
 
-	print cid
 
 	rating = CommentRating(user=user)
 	rating.cid = cid
