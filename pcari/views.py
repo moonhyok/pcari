@@ -549,8 +549,6 @@ def rate_comment(request, cid):
 	progression.save()
 	cid = cid
 
-	# print cid
-
 	rating = CommentRating(user=user)
 	rating.cid = cid
 	try:
