@@ -298,18 +298,18 @@ def review(request):
 	# print request.GET
 	
 	try:
-		age = request.GET['age']
+		age = request.POST['age']
 		age = int(age)
 	except:
 		age = -1
 		
 	try:
-		barangay = request.GET['barangay']
+		barangay = request.POST['barangay']
 	except:
 		barangay = ""
 
 	try:
-		gender = request.GET['gender']
+		gender = request.POST['gender']
 	except:
 		gender = ""
 	
@@ -501,12 +501,6 @@ def logout_view(request):
 	except:
 		pass
 
-	# if len(list(User.objects.all())) % 17 == 0:
-	# 	generate(request)
-	# 	comment_update()
-
-	# if len(list(User.objects.all())) % 31 == 0:
-	# 	se_update()
 
 	context = {
 	'translate':TEXT['translate'],
