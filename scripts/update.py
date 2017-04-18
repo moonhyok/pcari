@@ -1,5 +1,6 @@
 import environment
 
+from math import sqrt
 from pcari.models import QuantitativeQuestion, Rating, CommentRating, Comment
 
 def comment_update():
@@ -42,7 +43,7 @@ def generate():
 
 	ratings = Rating.objects.all()
 
-	url = request.META.get('HTTP_REFERER').split("/")
+	# url = request.META.get('HTTP_REFERER').split("/")
 
 	r_count = []
 	for _ in range(11):
@@ -60,22 +61,22 @@ def generate():
 			elif r == -1:
 				r_count[10] += 1
 
-		if "pcari" in url:
-			with open("/var/www/opinion/opinion.berkeley.edu/pcari/pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
-				datafile.write("score	count\n")
-				for j in range(len(r_count)):
-					if j == len(r_count)-1:
-						datafile.write("skip"+"	"+str(r_count[j])+"\n")
-					else:
-						datafile.write(str(j)+"	"+str(r_count[j])+"\n")
-		else:
-			with open("pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
-				datafile.write("score	count\n")
-				for j in range(len(r_count)):
-					if j == len(r_count)-1:
-						datafile.write("skip"+"	"+str(r_count[j])+"\n")
-					else:
-						datafile.write(str(j)+"	"+str(r_count[j])+"\n")
+		# if "pcari" in url:
+		with open("/var/www/opinion/opinion.berkeley.edu/pcari-test/pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
+			datafile.write("score	count\n")
+			for j in range(len(r_count)):
+				if j == len(r_count)-1:
+					datafile.write("skip"+"	"+str(r_count[j])+"\n")
+				else:
+					datafile.write(str(j)+"	"+str(r_count[j])+"\n")
+		# else:
+		# 	with open("pcari/static/data/q%d.tsv" % q.qid, "w") as datafile:
+		# 		datafile.write("score	count\n")
+		# 		for j in range(len(r_count)):
+		# 			if j == len(r_count)-1:
+		# 				datafile.write("skip"+"	"+str(r_count[j])+"\n")
+		# 			else:
+		# 				datafile.write(str(j)+"	"+str(r_count[j])+"\n")
 
 comment_update()
 se_update()
