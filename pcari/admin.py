@@ -304,5 +304,9 @@ admin.site.register(QuantitativeQuestion, QuantitativeQuestionAdmin)
 # 	a = 10
 # 	list_display = [a]
 
-admin.site.register(UserData)
+class UserDataAdmin(admin.ModelAdmin):
+    list_display = ['user', 'age', 'barangay', 'gender', 'language']
+    ordering = ['user']
+
+admin.site.register(UserData,UserDataAdmin)
 # admin.site.register(UserProgression, UserProgressionAdmin)
