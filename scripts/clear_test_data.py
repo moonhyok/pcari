@@ -3,18 +3,18 @@ from pcari.models import  QuantitativeQuestion, QualitativeQuestion, Rating, Use
 from django.views import generic
 from django.contrib.auth.models import User
 
-431
-500
+# 431
+# 500
 
 
 # count = 0
 users = User.objects.all()
 
-user = User.objects.all().filter(username = "431")
-user.delete()
+# user = User.objects.all().filter(username = "431")
+# user.delete()
 
-user = User.objects.all().filter(username = "500")
-user.delete()
+# user = User.objects.all().filter(username = "500")
+# user.delete()
 
 for u in users:
 	
