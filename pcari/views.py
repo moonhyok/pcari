@@ -174,6 +174,8 @@ def create_user(request, is_new = 1):
 def rate(request, qid):
 	init_text_cookie(request)
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 
 	user_data = UserData.objects.all().filter(user=user)[0]
 
@@ -268,6 +270,8 @@ def personal(request):
 	init_text_cookie(request)
 
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.personal_data = True
 	progression.save()
@@ -294,6 +298,8 @@ def review(request):
 	init_text_cookie(request)
 
 	user = request.user 
+	if not user.is_authenticated():
+		return landing(request)
 
 	# print request.GET
 	
@@ -376,6 +382,8 @@ def bloom(request, done = False):
 	init_text_cookie(request)
 
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 	# try:
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.bloom = True
@@ -446,6 +454,8 @@ def comment(request):
 	init_text_cookie(request)
 
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 	try:
 		progression = UserProgression.objects.all().filter(user=user)[0]
 		progression.comment = True
@@ -466,6 +476,8 @@ def logout_view(request):
 	init_text_cookie(request)
 
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 	try:
 		progression = UserProgression.objects.all().filter(user=user)[0]
 		progression.logout = True
@@ -506,6 +518,8 @@ def get_comment(request, cid):
 	init_text_cookie(request)
 
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 	cid = cid
 	c = Comment.objects.all().filter(id=cid)[0]
 	user_data = UserData.objects.all().filter(user=user)[0]
@@ -527,6 +541,8 @@ def rate_comment(request, cid):
 	init_text_cookie(request)
 
 	user = request.user
+	if not user.is_authenticated():
+		return landing(request)
 	progression = UserProgression.objects.all().filter(user=user)[0]
 	progression.peer_rating = True
 	progression.num_peer_rated += 1
